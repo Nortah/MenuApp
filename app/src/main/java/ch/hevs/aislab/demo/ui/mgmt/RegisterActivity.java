@@ -1,4 +1,4 @@
-package ch.hevs.aislab.demo.ui;
+package ch.hevs.aislab.demo.ui.mgmt;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

@@ -23,9 +23,6 @@ public class ClientEntity implements Client {
 
     private String password;
 
-    @ColumnInfo(name = "admin")
-    private Boolean admin;
-
     public ClientEntity() {
     }
 
@@ -34,7 +31,6 @@ public class ClientEntity implements Client {
         firstName = client.getFirstName();
         lastName = client.getLastName();
         password = client.getPassword();
-        admin = client.isAdmin();
     }
 
     @Override
@@ -71,15 +67,6 @@ public class ClientEntity implements Client {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    @Override
-    public Boolean isAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(Boolean admin) {
-        this.admin = admin;
     }
 
     @Override

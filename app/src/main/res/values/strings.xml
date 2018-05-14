@@ -1,97 +1,88 @@
 <resources>
-    <string name="app_name">644-1 DemoApplication 2.0</string>
+    <string name="app_name">Demo Application 2.0</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="hello_blank_fragment" translatable="false"></string>
+    <string name="clients_fragment_title">Clients</string>
+    <string name="accounts_fragment_title">Accounts</string>
+    <string name="disclaimer" translatable="false">Copyright &#169; 2017\nHES-SO Valais//Wallis Sierre</string>
+    <string name="impressum" translatable="false">644-1 Mobile &amp; Cloud Computing</string>
+    <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_invalid_email">Invalid login credentials</string>
+    <string name="error_invalid_password">This password is too short (&lt;5 characters)</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="title_activity_register">Registration</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
     <string name="title_activity_settings">Settings</string>
 
-    <!-- Strings related to Settings -->
+    <string name="pref_header_about">About</string>
 
-    <!-- Example General settings -->
-    <string name="pref_header_general">General</string>
-
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact
-        based on your message history
-    </string>
-
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
-
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_example_list_values">
-        <item>1</item>
-        <item>0</item>
-        <item>-1</item>
+    <string-array name="pref_language_list_titles">
+        <item>English</item>
+        <item>German</item>
     </string-array>
 
-    <!-- Example settings for Data & Sync -->
-    <string name="pref_header_data_sync">Data &amp; sync</string>
-
-    <string name="pref_title_sync_frequency">Sync frequency</string>
-    <string-array name="pref_sync_frequency_titles">
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_sync_frequency_values">
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
-        <item>180</item>
-        <item>360</item>
-        <item>-1</item>
+    <string-array name="pref_language_list_values" translatable="false">
+        <item>en</item>
+        <item>de</item>
     </string-array>
 
-    <string-array name="list_preference_entries">
-        <item>Entry 1</item>
-        <item>Entry 2</item>
-        <item>Entry 3</item>
-    </string-array>
-
-    <string-array name="list_preference_entry_values">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
-    <string-array name="multi_select_list_preference_default_value" />
-
-    <string name="pref_title_system_sync_settings">System sync settings</string>
-
-    <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications">Notifications</string>
-
-    <string name="pref_title_new_message_notifications">New message notifications</string>
-
-    <string name="pref_title_ringtone">Ringtone</string>
-    <string name="pref_ringtone_silent">Silent</string>
-
-    <string name="pref_title_vibrate">Vibrate</string>
+    <string name="client_name">Last Name</string>
+    <string name="client_firstName">First Name</string>
+    <string name="action_create">Create</string>
+    <string name="action_update">Save Changes</string>
+    <string name="action_delete">Delete</string>
+    <string name="toggle_admin" translatable="false">Admin</string>
+    <string name="client_repeat_password">Repeat Password</string>
+    <string name="fragment_title_create_account">Create Account</string>
+    <string name="fragment_title_create_client">Create Client</string>
+    <string name="fragment_title_account">Account</string>
+    <string name="account_balance">Account Balance</string>
+    <string name="action_deposit">Deposit</string>
+    <string name="action_withdraw">Withdraw</string>
+    <string name="action_transaction">Execute</string>
+    <string name="action_accept">Execute</string>
+    <string name="transaction_from">From</string>
+    <string name="transaction_to">To</string>
+    <string name="action_initialize_gae">Initialize Google Datastore</string>
+    <string name="fragment_title_transaction">Transaction</string>
+    <string name="transaction_amount">Amount</string>
+    <string name="error_transaction">The transfer amount exceeds the account balance</string>
+    <string name="error_transaction_negativ">The transaction amount must be positive</string>
+    <string name="balance" translatable="false">%1$s$</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="error_withdraw">Withdrawal cannot exceed account balance</string>
+    <string name="fragment_title_edit_client">Edit Client</string>
+    <string name="client_created">Client created</string>
+    <string name="client_edited">Client edited</string>
+    <string name="prompt_account_name">Account Name</string>
+    <string name="fragment_title_edit_account">Edit Account</string>
+    <string name="account_created">Account created</string>
+    <string name="account_edited">Account edited</string>
+    <string name="client_deleted">Client deleted</string>
+    <string name="account_deleted">Account deleted</string>
+    <string name="fragment_title_delete_account">Delete Account</string>
+    <string name="fragment_title_delete_client">Delete Client</string>
+    <string name="account_delete_msg">Do you want to delete the account %1$s?</string>
+    <string name="client_delete_msg">Do you really want to delete the client %1$s? All accounts of this client will be deleted as well.</string>
+    <string name="pref_header_language">Language</string>
+    <string name="pref_about_text">This application was developed to provide a possibility to demonstrate how the newly released Android Architecture Components could be implemented in an application.</string>
+    <string name="pref_title_language">Change your display language</string>
+    <string name="client_fragment_title">Client</string>
+    <string name="action_logout">Logout</string>
+    <string name="logout_msg">Do you really want to logout?</string>
+    <string name="transaction_executed">Transaction executed</string>
+    <string name="action_register">Register</string>
 </resources>
