@@ -33,12 +33,20 @@ public class ClientEntity implements Client {
         password = client.getPassword();
     }
 
+    public ClientEntity(@NonNull String email, String firstName, String lastName, String password) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+    }
+
+    @NonNull
     @Override
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(@NonNull String email) {
         this.email = email;
     }
 

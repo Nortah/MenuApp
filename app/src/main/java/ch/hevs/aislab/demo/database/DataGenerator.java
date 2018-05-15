@@ -19,28 +19,24 @@ class DataGenerator {
         client1.setLastName("Platini");
         client1.setEmail("m.p@fifa.com");
         client1.setPassword("michel1");
-        client1.setAdmin(false);
 
         ClientEntity client2 = new ClientEntity();
         client2.setFirstName("Sepp");
         client2.setLastName("Blatter");
         client2.setEmail("s.b@fifa.com");
         client2.setPassword("sepp1");
-        client2.setAdmin(true);
 
         ClientEntity client3 = new ClientEntity();
         client3.setFirstName("Ebbe");
         client3.setLastName("Schwartz");
         client3.setEmail("e.s@fifa.com");
         client3.setPassword("ebbe1");
-        client3.setAdmin(false);
 
         ClientEntity client4 = new ClientEntity();
         client4.setFirstName("Aleksander");
         client4.setLastName("Ceferin");
         client4.setEmail("a.c@fifa.com");
         client4.setPassword("aleksander1");
-        client4.setAdmin(false);
 
         clients.add(client1);
         clients.add(client2);
