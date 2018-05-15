@@ -6,9 +6,8 @@
 
     <string name="action_settings">Settings</string>
 
-    <string name="hello_blank_fragment" translatable="false"></string>
-    <string name="clients_fragment_title">Clients</string>
-    <string name="accounts_fragment_title">Accounts</string>
+    <string name="title_activity_client">Client</string>
+    <string name="title_activity_accounts">Accounts</string>
     <string name="disclaimer" translatable="false">Copyright &#169; 2017\nHES-SO Valais//Wallis Sierre</string>
     <string name="impressum" translatable="false">644-1 Mobile &amp; Cloud Computing</string>
     <string name="title_activity_login">Sign in</string>
@@ -47,9 +46,8 @@
     <string name="action_delete">Delete</string>
     <string name="toggle_admin" translatable="false">Admin</string>
     <string name="client_repeat_password">Repeat Password</string>
-    <string name="fragment_title_create_account">Create Account</string>
-    <string name="fragment_title_create_client">Create Client</string>
-    <string name="fragment_title_account">Account</string>
+    <string name="title_activity_create_account">Create Account</string>
+    <string name="title_activity_account">Account</string>
     <string name="account_balance">Account Balance</string>
     <string name="action_deposit">Deposit</string>
     <string name="action_withdraw">Withdraw</string>
@@ -58,30 +56,29 @@
     <string name="transaction_from">From</string>
     <string name="transaction_to">To</string>
     <string name="action_initialize_gae">Initialize Google Datastore</string>
-    <string name="fragment_title_transaction">Transaction</string>
+    <string name="title_activity_transaction">Transaction</string>
     <string name="transaction_amount">Amount</string>
     <string name="error_transaction">The transfer amount exceeds the account balance</string>
     <string name="error_transaction_negativ">The transaction amount must be positive</string>
     <string name="balance" translatable="false">%1$s$</string>
     <string name="action_cancel">Cancel</string>
     <string name="error_withdraw">Withdrawal cannot exceed account balance</string>
-    <string name="fragment_title_edit_client">Edit Client</string>
+    <string name="title_activity_edit_client">Edit Client</string>
     <string name="client_created">Client created</string>
     <string name="client_edited">Client edited</string>
     <string name="prompt_account_name">Account Name</string>
-    <string name="fragment_title_edit_account">Edit Account</string>
+    <string name="title_activity_edit_account">Edit Account</string>
     <string name="account_created">Account created</string>
     <string name="account_edited">Account edited</string>
     <string name="client_deleted">Client deleted</string>
     <string name="account_deleted">Account deleted</string>
-    <string name="fragment_title_delete_account">Delete Account</string>
-    <string name="fragment_title_delete_client">Delete Client</string>
+    <string name="title_activity_delete_account">Delete Account</string>
+    <string name="title_activity_delete_client">Delete Client</string>
     <string name="account_delete_msg">Do you want to delete the account %1$s?</string>
     <string name="client_delete_msg">Do you really want to delete the client %1$s? All accounts of this client will be deleted as well.</string>
     <string name="pref_header_language">Language</string>
     <string name="pref_about_text">This application was developed to provide a possibility to demonstrate how the newly released Android Architecture Components could be implemented in an application.</string>
     <string name="pref_title_language">Change your display language</string>
-    <string name="client_fragment_title">Client</string>
     <string name="action_logout">Logout</string>
     <string name="logout_msg">Do you really want to logout?</string>
     <string name="transaction_executed">Transaction executed</string>

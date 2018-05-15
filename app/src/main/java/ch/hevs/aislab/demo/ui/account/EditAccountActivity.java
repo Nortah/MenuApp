@@ -1,6 +1,5 @@
 package ch.hevs.aislab.demo.ui.account;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 

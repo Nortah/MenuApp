@@ -1,17 +1,12 @@
 package ch.hevs.aislab.demo.ui.mgmt;
 
-import android.app.Activity;
-import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,7 +14,6 @@ import android.widget.ProgressBar;
 
 import ch.hevs.aislab.demo.BasicApp;
 import ch.hevs.aislab.demo.R;
-import ch.hevs.aislab.demo.database.entity.ClientEntity;
 import ch.hevs.aislab.demo.database.repository.ClientRepository;
 import ch.hevs.aislab.demo.ui.MainActivity;
 import ch.hevs.aislab.demo.util.LocaleManager;
