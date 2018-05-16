@@ -3,23 +3,12 @@ package ch.hevs.aislab.demo.ui;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import ch.hevs.aislab.demo.R;
-import ch.hevs.aislab.demo.ui.account.AccountsActivity;
-import ch.hevs.aislab.demo.ui.client.ClientActivity;
 import ch.hevs.aislab.demo.ui.mgmt.LoginActivity;
-import ch.hevs.aislab.demo.ui.mgmt.SettingsActivity;
-import ch.hevs.aislab.demo.ui.transaction.TransactionActivity;
+import ch.hevs.aislab.demo.ui.util.BaseActivity;
 
 public class MainActivity extends BaseActivity {
 

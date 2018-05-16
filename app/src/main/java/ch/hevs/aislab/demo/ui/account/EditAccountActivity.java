@@ -3,15 +3,13 @@ package ch.hevs.aislab.demo.ui.account;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import ch.hevs.aislab.demo.R;
 import ch.hevs.aislab.demo.database.entity.AccountEntity;
-import ch.hevs.aislab.demo.ui.BaseActivity;
+import ch.hevs.aislab.demo.ui.util.BaseActivity;
 import ch.hevs.aislab.demo.ui.MainActivity;
 import ch.hevs.aislab.demo.viewmodel.account.AccountViewModel;
 

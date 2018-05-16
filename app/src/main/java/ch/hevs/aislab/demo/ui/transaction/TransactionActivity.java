@@ -3,7 +3,7 @@ package ch.hevs.aislab.demo.ui.transaction;
 import android.os.Bundle;
 
 import ch.hevs.aislab.demo.R;
-import ch.hevs.aislab.demo.ui.BaseActivity;
+import ch.hevs.aislab.demo.ui.util.BaseActivity;
 
 public class TransactionActivity extends BaseActivity {
 

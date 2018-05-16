@@ -81,7 +81,7 @@
                 android:value="ch.hevs.aislab.demo.ui.account.AccountsActivity" />
         </activity>
         <activity
-            android:name=".ui.BaseActivity"
+            android:name=".ui.util.BaseActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.account.AccountDetailActivity"

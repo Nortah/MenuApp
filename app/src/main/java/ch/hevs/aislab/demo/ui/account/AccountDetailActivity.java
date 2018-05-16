@@ -19,7 +19,7 @@ import java.text.NumberFormat;
 
 import ch.hevs.aislab.demo.R;
 import ch.hevs.aislab.demo.database.entity.AccountEntity;
-import ch.hevs.aislab.demo.ui.BaseActivity;
+import ch.hevs.aislab.demo.ui.util.BaseActivity;
 import ch.hevs.aislab.demo.viewmodel.account.AccountViewModel;
 
 public class AccountDetailActivity extends BaseActivity {

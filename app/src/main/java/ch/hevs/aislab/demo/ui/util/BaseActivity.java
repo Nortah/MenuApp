@@ -1,4 +1,4 @@
-package ch.hevs.aislab.demo.ui;
+package ch.hevs.aislab.demo.ui.util;
 
 import android.content.Intent;
 import android.os.Bundle;
