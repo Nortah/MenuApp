@@ -1,13 +1,14 @@
 package ch.hevs.aislab.demo.ui.account;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,16 +17,15 @@ import android.widget.Toast;
 
 import java.text.NumberFormat;
 
-import ch.hevs.aislab.demo.BasicApp;
 import ch.hevs.aislab.demo.R;
 import ch.hevs.aislab.demo.database.entity.AccountEntity;
-import ch.hevs.aislab.demo.database.repository.AccountRepository;
 import ch.hevs.aislab.demo.ui.BaseActivity;
 import ch.hevs.aislab.demo.viewmodel.account.AccountViewModel;
 
-public class AccountActivity extends BaseActivity {
+public class AccountDetailActivity extends BaseActivity {
 
-    private static final String TAG = "AccountActivity";
+    private static final String TAG = "AccountDetailActivity";
+    private static final int EDIT_ACCOUNT = 1;
 
     private AccountEntity mAccount;
     private TextView mTvBalance;
@@ -37,8 +37,6 @@ public class AccountActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.activity_account, frameLayout);
-
-        setTitle(getString(R.string.title_activity_account));
 
         Long accountId = getIntent().getLongExtra("accountId", 0L);
 
@@ -55,6 +53,23 @@ public class AccountActivity extends BaseActivity {
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        menu.add(Menu.NONE, EDIT_ACCOUNT, 1, getString(R.string.title_activity_edit_account));
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == EDIT_ACCOUNT) {
+            Intent intent = new Intent(this, EditAccountActivity.class);
+            intent.putExtra("accountId", mAccount.getId());
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void initiateView() {
         mTvBalance = findViewById(R.id.accBalance);
         mDefaultFormat = NumberFormat.getCurrencyInstance();
@@ -68,6 +83,7 @@ public class AccountActivity extends BaseActivity {
 
     private void updateContent() {
         if (mAccount != null) {
+            setTitle(mAccount.getName());
             mTvBalance.setText(mDefaultFormat.format(mAccount.getBalance()));
             Log.i(TAG, "Activity populated.");
         }
@@ -87,7 +103,7 @@ public class AccountActivity extends BaseActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Double amount = Double.parseDouble(accountMovement.getText().toString());
-                Toast toast = Toast.makeText(AccountActivity.this, getString(R.string.error_withdraw), Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(AccountDetailActivity.this, getString(R.string.error_withdraw), Toast.LENGTH_LONG);
 
                 if (action == R.string.action_withdraw) {
                     if (mAccount.getBalance() < amount) {

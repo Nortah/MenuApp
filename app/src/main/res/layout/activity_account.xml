@@ -6,7 +6,7 @@
     android:layout_marginRight="16dp"
     android:layout_marginTop="16dp"
     android:orientation="vertical"
-    tools:context="ch.hevs.aislab.demo.ui.account.AccountActivity">
+    tools:context="ch.hevs.aislab.demo.ui.account.AccountDetailActivity">
 
     <TextView
         android:id="@+id/accBalanceTitle"

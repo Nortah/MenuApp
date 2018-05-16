@@ -47,7 +47,6 @@
     <string name="toggle_admin" translatable="false">Admin</string>
     <string name="client_repeat_password">Repeat Password</string>
     <string name="title_activity_create_account">Create Account</string>
-    <string name="title_activity_account">Account</string>
     <string name="account_balance">Account Balance</string>
     <string name="action_deposit">Deposit</string>
     <string name="action_withdraw">Withdraw</string>

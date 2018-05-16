@@ -17,7 +17,7 @@ import ch.hevs.aislab.demo.util.OnAsyncEventListener;
 
 public class AccountViewModel  extends AndroidViewModel {
 
-    private static final String TAG = "OwnAccountListViewModel";
+    private static final String TAG = "AccountViewModel";
 
     private Application mApplication;
 
@@ -36,12 +36,12 @@ public class AccountViewModel  extends AndroidViewModel {
 
         LiveData<AccountEntity> account = repository.getAccount(accountId);
 
-        // observe the changes of the products from the database and forward them
+        // observe the changes of the account entity from the database and forward them
         mObservableAccount.addSource(account, mObservableAccount::setValue);
     }
 
     /**
-     * A creator is used to inject the account owner id into the ViewModel
+     * A creator is used to inject the account id into the ViewModel
      */
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
 
@@ -66,38 +66,17 @@ public class AccountViewModel  extends AndroidViewModel {
     }
 
     /**
-     * Expose the LiveData AccountEntities query so the UI can observe it.
+     * Expose the LiveData AccountEntity query so the UI can observe it.
      */
     public LiveData<AccountEntity> getAccount() {
         return mObservableAccount;
     }
 
     public void updateAccount(AccountEntity account) {
-        new UpdateAccount(mApplication, new OnAsyncEventListener() {
-            @Override
-            public void onSuccess(Object object) {
-                mObservableAccount.setValue(account);
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-
-            }
-        }).execute(account);
+        new UpdateAccount(mApplication).execute(account);
     }
 
     public void createAccount(AccountEntity account) {
-        new CreateAccount(mApplication, new OnAsyncEventListener() {
-            @Override
-            public void onSuccess(Object object) {
-                account.setId((Long) object);
-                mObservableAccount.setValue(account);
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-
-            }
-        }).execute(account);
+        new CreateAccount(mApplication).execute(account);
     }
 }

@@ -12,34 +12,41 @@ import android.util.Pair;
 import java.util.List;
 
 import ch.hevs.aislab.demo.BasicApp;
+import ch.hevs.aislab.demo.database.async.account.DeleteAccount;
 import ch.hevs.aislab.demo.database.async.account.TransactionAccount;
 import ch.hevs.aislab.demo.database.entity.AccountEntity;
 import ch.hevs.aislab.demo.database.pojo.ClientAccounts;
+import ch.hevs.aislab.demo.database.repository.AccountRepository;
 import ch.hevs.aislab.demo.database.repository.ClientRepository;
 
-public class ClientAccountsListViewModel extends AndroidViewModel {
+public class AccountListViewModel extends AndroidViewModel {
 
-    private static final String TAG = "ClientAccountsListViewModel";
+    private static final String TAG = "AccountListViewModel";
 
     private Application mApplication;
 
     // MediatorLiveData can observe other LiveData objects and react on their emissions.
     private final MediatorLiveData<List<ClientAccounts>> mObservableClientAccounts;
+    private final MediatorLiveData<List<AccountEntity>> mObservableOwnAccounts;
 
-    public ClientAccountsListViewModel(@NonNull Application application,
-                                       final String ownerId, ClientRepository repository) {
+    public AccountListViewModel(@NonNull Application application,
+                                final String ownerId, ClientRepository clientRepository, AccountRepository accountRepository) {
         super(application);
 
         mApplication = application;
 
         mObservableClientAccounts = new MediatorLiveData<>();
+        mObservableOwnAccounts = new MediatorLiveData<>();
         // set by default null, until we get data from the database.
         mObservableClientAccounts.setValue(null);
+        mObservableOwnAccounts.setValue(null);
 
-        LiveData<List<ClientAccounts>> clientAccounts = repository.getOtherClientsWithAccounts(ownerId);
+        LiveData<List<ClientAccounts>> clientAccounts = clientRepository.getOtherClientsWithAccounts(ownerId);
+        LiveData<List<AccountEntity>> ownAccounts = accountRepository.getByOwner(ownerId);
 
-        // observe the changes of the products from the database and forward them
+        // observe the changes of the entities from the database and forward them
         mObservableClientAccounts.addSource(clientAccounts, mObservableClientAccounts::setValue);
+        mObservableOwnAccounts.addSource(ownAccounts, mObservableOwnAccounts::setValue);
     }
 
     /**
@@ -52,18 +59,21 @@ public class ClientAccountsListViewModel extends AndroidViewModel {
 
         private final String mOwnerId;
 
-        private final ClientRepository mRepository;
+        private final ClientRepository mClientRepository;
+
+        private final AccountRepository mAccountRepository;
 
         public Factory(@NonNull Application application, String ownerId) {
             mApplication = application;
             mOwnerId = ownerId;
-            mRepository = ((BasicApp) application).getClientRepository();
+            mClientRepository = ((BasicApp) application).getClientRepository();
+            mAccountRepository = ((BasicApp) application).getAccountRepository();
         }
 
         @Override
         public <T extends ViewModel> T create(Class<T> modelClass) {
             //noinspection unchecked
-            return (T) new ClientAccountsListViewModel(mApplication, mOwnerId, mRepository);
+            return (T) new AccountListViewModel(mApplication, mOwnerId, mClientRepository, mAccountRepository);
         }
     }
 
@@ -72,6 +82,17 @@ public class ClientAccountsListViewModel extends AndroidViewModel {
      */
     public LiveData<List<ClientAccounts>> getClientAccounts() {
         return mObservableClientAccounts;
+    }
+
+    /**
+     * Expose the LiveData AccountEntities query so the UI can observe it.
+     */
+    public LiveData<List<AccountEntity>> getOwnAccounts() {
+        return mObservableOwnAccounts;
+    }
+
+    public void deleteAccount(AccountEntity account) {
+        new DeleteAccount(mApplication).execute(account);
     }
 
     public void executeTransaction(final AccountEntity sender, final AccountEntity recipient) {

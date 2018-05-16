@@ -24,17 +24,15 @@ import ch.hevs.aislab.demo.database.entity.AccountEntity;
 import ch.hevs.aislab.demo.ui.BaseActivity;
 import ch.hevs.aislab.demo.ui.MainActivity;
 import ch.hevs.aislab.demo.util.RecyclerViewItemClickListener;
-import ch.hevs.aislab.demo.viewmodel.account.OwnAccountListViewModel;
+import ch.hevs.aislab.demo.viewmodel.account.AccountListViewModel;
 
 public class AccountsActivity extends BaseActivity {
 
     private static final String TAG = "ClientsFragment";
 
     private List<AccountEntity> mAccounts;
-    private RecyclerView mRecyclerView;
     private RecyclerAdapter<AccountEntity> mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private OwnAccountListViewModel mViewModel;
+    private AccountListViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,19 +42,19 @@ public class AccountsActivity extends BaseActivity {
         setTitle(getString(R.string.title_activity_accounts));
         navigationView.setCheckedItem(position);
 
-        mRecyclerView = findViewById(R.id.accountsRecyclerView);
+        RecyclerView recyclerView = findViewById(R.id.accountsRecyclerView);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         //mRecyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 LinearLayoutManager.VERTICAL);
-        mRecyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.addItemDecoration(dividerItemDecoration);
 
         SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
         String user = settings.getString(MainActivity.PREFS_USER, null);
@@ -69,7 +67,7 @@ public class AccountsActivity extends BaseActivity {
                 Log.d(TAG, "clicked position:" + position);
                 Log.d(TAG, "clicked on: " + mAccounts.get(position).getName());
 
-                Intent intent = new Intent(AccountsActivity.this, AccountActivity.class);
+                Intent intent = new Intent(AccountsActivity.this, AccountDetailActivity.class);
                 intent.putExtra("accountId", mAccounts.get(position).getId());
                 startActivity(intent);
             }
@@ -88,9 +86,9 @@ public class AccountsActivity extends BaseActivity {
                 new Intent(AccountsActivity.this, EditAccountActivity.class))
         );
 
-        OwnAccountListViewModel.Factory factory = new OwnAccountListViewModel.Factory(
+        AccountListViewModel.Factory factory = new AccountListViewModel.Factory(
                 getApplication(), user);
-        mViewModel = ViewModelProviders.of(this, factory).get(OwnAccountListViewModel.class);
+        mViewModel = ViewModelProviders.of(this, factory).get(AccountListViewModel.class);
         mViewModel.getOwnAccounts().observe(this, accountEntities -> {
             if (accountEntities != null) {
                 mAccounts = accountEntities;
@@ -98,7 +96,7 @@ public class AccountsActivity extends BaseActivity {
             }
         });
 
-        mRecyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(mAdapter);
     }
 
     private void createDeleteDialog(final int position) {

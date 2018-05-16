@@ -39,13 +39,10 @@ public class EditAccountActivity extends BaseActivity {
         mEtAccountName = findViewById(R.id.accountName);
         mEtAccountName.requestFocus();
         Button saveBtn = findViewById(R.id.createAccountButton);
-        saveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveChanges(mEtAccountName.getText().toString());
-                onBackPressed();
-                mToast.show();
-            }
+        saveBtn.setOnClickListener(view -> {
+            saveChanges(mEtAccountName.getText().toString());
+            onBackPressed();
+            mToast.show();
         });
 
         Long accountId = getIntent().getLongExtra("accountId", 0L);
@@ -55,6 +52,7 @@ public class EditAccountActivity extends BaseActivity {
             mEditMode = false;
         } else {
             setTitle(getString(R.string.title_activity_edit_account));
+            saveBtn.setText(R.string.action_update);
             mToast = Toast.makeText(this, getString(R.string.account_edited), Toast.LENGTH_LONG);
             mEditMode = true;
         }

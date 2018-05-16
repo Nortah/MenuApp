@@ -84,8 +84,7 @@
             android:name=".ui.BaseActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.account.AccountActivity"
-            android:label="@string/title_activity_account"
+            android:name=".ui.account.AccountDetailActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".ui.account.AccountsActivity">
             <meta-data
