@@ -98,6 +98,11 @@ public class AccountEntity implements Account, Parcelable {
         return o.getId().equals(this.getId());
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
     // Everything below this is part of the Parcelable implementation:
     @Override
     public int describeContents() {

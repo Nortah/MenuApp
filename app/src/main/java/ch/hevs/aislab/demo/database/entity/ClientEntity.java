@@ -95,6 +95,11 @@ public class ClientEntity implements Client, Parcelable {
         return o.getEmail().equals(this.getEmail());
     }
 
+    @Override
+    public String toString() {
+        return firstName + " " + lastName;
+    }
+
     // Everything below this is part of the Parcelable implementation:
     @Override
     public int describeContents() {
