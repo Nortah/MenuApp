@@ -47,7 +47,8 @@
         <activity
             android:name=".ui.client.ClientActivity"
             android:label="@string/title_activity_client"
-            android:parentActivityName=".ui.MainActivity">
+            android:parentActivityName=".ui.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ch.hevs.aislab.demo.ui.MainActivity" />
@@ -64,7 +65,8 @@
         <activity
             android:name=".ui.account.AccountsActivity"
             android:label="@string/title_activity_accounts"
-            android:parentActivityName=".ui.MainActivity">
+            android:parentActivityName=".ui.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ch.hevs.aislab.demo.ui.MainActivity" />
@@ -72,7 +74,8 @@
         <activity
             android:name=".ui.account.EditAccountActivity"
             android:label="@string/title_activity_edit_account"
-            android:parentActivityName=".ui.account.AccountsActivity">
+            android:parentActivityName=".ui.account.AccountsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ch.hevs.aislab.demo.ui.account.AccountsActivity" />
@@ -80,6 +83,15 @@
         <activity
             android:name=".ui.BaseActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.account.AccountActivity"
+            android:label="@string/title_activity_account"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".ui.account.AccountsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ch.hevs.aislab.demo.ui.account.AccountsActivity" />
+        </activity>
     </application>
 
 </manifest>

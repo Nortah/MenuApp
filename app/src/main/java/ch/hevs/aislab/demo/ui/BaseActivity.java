@@ -43,7 +43,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        frameLayout = findViewById(R.id.content_frame);
+        frameLayout = findViewById(R.id.flContent);
 
         drawerLayout = findViewById(R.id.base_drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -88,10 +88,15 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+
+        if (id == BaseActivity.position) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+            return false;
+        }
+        BaseActivity.position = id;
         Intent intent = null;
 
         navigationView.setCheckedItem(id);
-        BaseActivity.position = id;
 
         if (id == R.id.nav_client) {
             intent = new Intent(this, ClientActivity.class);

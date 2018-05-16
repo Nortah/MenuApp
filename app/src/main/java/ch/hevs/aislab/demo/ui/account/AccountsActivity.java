@@ -1,10 +1,11 @@
 package ch.hevs.aislab.demo.ui.account;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,11 +21,12 @@ import java.util.List;
 import ch.hevs.aislab.demo.R;
 import ch.hevs.aislab.demo.adapter.RecyclerAdapter;
 import ch.hevs.aislab.demo.database.entity.AccountEntity;
+import ch.hevs.aislab.demo.ui.BaseActivity;
 import ch.hevs.aislab.demo.ui.MainActivity;
 import ch.hevs.aislab.demo.util.RecyclerViewItemClickListener;
-import ch.hevs.aislab.demo.viewmodel.OwnAccountListViewModel;
+import ch.hevs.aislab.demo.viewmodel.account.OwnAccountListViewModel;
 
-public class AccountsActivity extends AppCompatActivity {
+public class AccountsActivity extends BaseActivity {
 
     private static final String TAG = "ClientsFragment";
 
@@ -37,7 +39,11 @@ public class AccountsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_accounts);
+        getLayoutInflater().inflate(R.layout.activity_accounts, frameLayout);
+
+        setTitle(getString(R.string.title_activity_accounts));
+        navigationView.setCheckedItem(position);
+
         mRecyclerView = findViewById(R.id.accountsRecyclerView);
 
         // use this setting to improve performance if you know that changes
@@ -63,7 +69,9 @@ public class AccountsActivity extends AppCompatActivity {
                 Log.d(TAG, "clicked position:" + position);
                 Log.d(TAG, "clicked on: " + mAccounts.get(position).getName());
 
-                //TODO: Go to AccountActivity and display acc details. mAccounts.get(position)
+                Intent intent = new Intent(AccountsActivity.this, AccountActivity.class);
+                intent.putExtra("accountId", mAccounts.get(position).getId());
+                startActivity(intent);
             }
 
             @Override
@@ -74,6 +82,11 @@ public class AccountsActivity extends AppCompatActivity {
                 createDeleteDialog(position);
             }
         });
+
+        FloatingActionButton fab = findViewById(R.id.floatingActionButton);
+        fab.setOnClickListener(view -> startActivity(
+                new Intent(AccountsActivity.this, EditAccountActivity.class))
+        );
 
         OwnAccountListViewModel.Factory factory = new OwnAccountListViewModel.Factory(
                 getApplication(), user);

@@ -1,50 +1,43 @@
-package ch.hevs.aislab.demo.viewmodel;
+package ch.hevs.aislab.demo.viewmodel.account;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.util.Log;
-
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import ch.hevs.aislab.demo.BasicApp;
 import ch.hevs.aislab.demo.database.async.account.CreateAccount;
-import ch.hevs.aislab.demo.database.async.account.DeleteAccount;
 import ch.hevs.aislab.demo.database.async.account.UpdateAccount;
 import ch.hevs.aislab.demo.database.entity.AccountEntity;
 import ch.hevs.aislab.demo.database.repository.AccountRepository;
+import ch.hevs.aislab.demo.util.OnAsyncEventListener;
 
-public class OwnAccountListViewModel extends AndroidViewModel {
+public class AccountViewModel  extends AndroidViewModel {
 
     private static final String TAG = "OwnAccountListViewModel";
 
     private Application mApplication;
 
     // MediatorLiveData can observe other LiveData objects and react on their emissions.
-    private final MediatorLiveData<List<AccountEntity>> mObservableAccounts;
+    private final MediatorLiveData<AccountEntity> mObservableAccount;
 
-    public OwnAccountListViewModel(@NonNull Application application,
-                                   final String accountId, AccountRepository repository) {
+    public AccountViewModel(@NonNull Application application,
+                                   final Long accountId, AccountRepository repository) {
         super(application);
 
         mApplication = application;
 
-        mObservableAccounts = new MediatorLiveData<>();
+        mObservableAccount = new MediatorLiveData<>();
         // set by default null, until we get data from the database.
-        mObservableAccounts.setValue(null);
+        mObservableAccount.setValue(null);
 
-        LiveData<List<AccountEntity>> accounts = repository.getByOwner(accountId);
+        LiveData<AccountEntity> account = repository.getAccount(accountId);
 
         // observe the changes of the products from the database and forward them
-        mObservableAccounts.addSource(accounts, mObservableAccounts::setValue);
+        mObservableAccount.addSource(account, mObservableAccount::setValue);
     }
 
     /**
@@ -55,11 +48,11 @@ public class OwnAccountListViewModel extends AndroidViewModel {
         @NonNull
         private final Application mApplication;
 
-        private final String mAccountId;
+        private final Long mAccountId;
 
         private final AccountRepository mRepository;
 
-        public Factory(@NonNull Application application, String accountId) {
+        public Factory(@NonNull Application application, Long accountId) {
             mApplication = application;
             mAccountId = accountId;
             mRepository = ((BasicApp) application).getAccountRepository();
@@ -68,26 +61,43 @@ public class OwnAccountListViewModel extends AndroidViewModel {
         @Override
         public <T extends ViewModel> T create(Class<T> modelClass) {
             //noinspection unchecked
-            return (T) new OwnAccountListViewModel(mApplication, mAccountId, mRepository);
+            return (T) new AccountViewModel(mApplication, mAccountId, mRepository);
         }
     }
 
     /**
      * Expose the LiveData AccountEntities query so the UI can observe it.
      */
-    public LiveData<List<AccountEntity>> getOwnAccounts() {
-        return mObservableAccounts;
-    }
-
-    public void deleteAccount(AccountEntity account) {
-        new DeleteAccount(mApplication).execute(account);
-    }
-
-    public void addAccount(AccountEntity account) {
-        new CreateAccount(mApplication).execute(account);
+    public LiveData<AccountEntity> getAccount() {
+        return mObservableAccount;
     }
 
     public void updateAccount(AccountEntity account) {
-        new UpdateAccount(mApplication).execute(account);
+        new UpdateAccount(mApplication, new OnAsyncEventListener() {
+            @Override
+            public void onSuccess(Object object) {
+                mObservableAccount.setValue(account);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        }).execute(account);
+    }
+
+    public void createAccount(AccountEntity account) {
+        new CreateAccount(mApplication, new OnAsyncEventListener() {
+            @Override
+            public void onSuccess(Object object) {
+                account.setId((Long) object);
+                mObservableAccount.setValue(account);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        }).execute(account);
     }
 }

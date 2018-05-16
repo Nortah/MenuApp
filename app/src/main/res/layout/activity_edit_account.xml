@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.account.EditAccountActivity">
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginTop="16dp"
+    android:orientation="vertical"
+    tools:context="ch.hevs.aislab.demo.ui.account.EditAccountActivity">
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -25,4 +28,4 @@
         android:layout_height="wrap_content"
         android:text="@string/action_create" />
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

@@ -1,4 +1,4 @@
-package ch.hevs.aislab.demo.viewmodel;
+package ch.hevs.aislab.demo.viewmodel.account;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
@@ -6,7 +6,6 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Pair;
 
@@ -28,7 +27,7 @@ public class ClientAccountsListViewModel extends AndroidViewModel {
     private final MediatorLiveData<List<ClientAccounts>> mObservableClientAccounts;
 
     public ClientAccountsListViewModel(@NonNull Application application,
-                                       final String accountId, ClientRepository repository) {
+                                       final String ownerId, ClientRepository repository) {
         super(application);
 
         mApplication = application;
@@ -37,7 +36,7 @@ public class ClientAccountsListViewModel extends AndroidViewModel {
         // set by default null, until we get data from the database.
         mObservableClientAccounts.setValue(null);
 
-        LiveData<List<ClientAccounts>> clientAccounts = repository.getOtherClientsWithAccounts(accountId);
+        LiveData<List<ClientAccounts>> clientAccounts = repository.getOtherClientsWithAccounts(ownerId);
 
         // observe the changes of the products from the database and forward them
         mObservableClientAccounts.addSource(clientAccounts, mObservableClientAccounts::setValue);
@@ -51,20 +50,20 @@ public class ClientAccountsListViewModel extends AndroidViewModel {
         @NonNull
         private final Application mApplication;
 
-        private final String mAccountId;
+        private final String mOwnerId;
 
         private final ClientRepository mRepository;
 
-        public Factory(@NonNull Application application, String accountId) {
+        public Factory(@NonNull Application application, String ownerId) {
             mApplication = application;
-            mAccountId = accountId;
+            mOwnerId = ownerId;
             mRepository = ((BasicApp) application).getClientRepository();
         }
 
         @Override
         public <T extends ViewModel> T create(Class<T> modelClass) {
             //noinspection unchecked
-            return (T) new ClientAccountsListViewModel(mApplication, mAccountId, mRepository);
+            return (T) new ClientAccountsListViewModel(mApplication, mOwnerId, mRepository);
         }
     }
 
