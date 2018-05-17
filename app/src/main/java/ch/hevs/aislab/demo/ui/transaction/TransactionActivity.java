@@ -3,10 +3,8 @@ package ch.hevs.aislab.demo.ui.transaction;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -14,6 +12,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import ch.hevs.aislab.demo.R;
 import ch.hevs.aislab.demo.adapter.ListAdapter;
@@ -28,15 +28,13 @@ public class TransactionActivity extends BaseActivity {
 
     private final String TAG = "TransactionFragment";
 
-    private String mUser;
-    private ClientEntity mLoggedIn;
     private AccountEntity mFromAccount;
     private AccountEntity mToAccount;
 
-    //private List<AccountEntity> mClientAccounts;
     private List<AccountEntity> mOwnAccounts;
-    //private List<ClientEntity> mClients;
     private List<ClientAccounts> mClientAccounts;
+
+    private SortedMap<ClientEntity, List<AccountEntity>> mClientEntityMultimap;
 
     private Spinner mSpinnerFromAccount;
     private Spinner mSpinnerToClient;
@@ -86,7 +84,7 @@ public class TransactionActivity extends BaseActivity {
         mViewModel.getClientAccounts().observe(this, clientAccounts -> {
             if (clientAccounts != null) {
                 mClientAccounts = clientAccounts;
-                //setupToClientSpinner();
+                setupMap();
             }
         });
     }
@@ -106,14 +104,24 @@ public class TransactionActivity extends BaseActivity {
         });
     }
 
-    private void setupToClientSpinner(List<ClientEntity> clientEntities) {
+    private void setupMap() {
+        mClientEntityMultimap = new TreeMap<>();
+        for (ClientAccounts cA : mClientAccounts) {
+            mClientEntityMultimap.put(cA.client, cA.accounts);
+        }
+        setupToClientSpinner();
+    }
+
+    private void setupToClientSpinner() {
         mSpinnerToClient = findViewById(R.id.spinner_toClient);
-        mAdapterClient = new ListAdapter<>(this, R.layout.row_client, clientEntities);
+        mAdapterClient = new ListAdapter<>(this, R.layout.row_client,
+                new ArrayList<>(mClientEntityMultimap.keySet())
+        );
         mSpinnerToClient.setAdapter(mAdapterClient);
         mSpinnerToClient.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //populateToAccount((ClientEntity) parent.getItemAtPosition(position));
+                setupToAccSpinner((ClientEntity) parent.getItemAtPosition(position));
             }
 
             @Override
@@ -121,9 +129,9 @@ public class TransactionActivity extends BaseActivity {
         });
     }
 
-    private void setupToAccSpinner(List<AccountEntity> accountEntities) {
+    private void setupToAccSpinner(ClientEntity client) {
         mSpinnerToAccount = findViewById(R.id.spinner_toAcc);
-        mAdapterToAccount = new ListAdapter<>(this, R.layout.row_client, accountEntities);
+        mAdapterToAccount = new ListAdapter<>(this, R.layout.row_client, mClientEntityMultimap.get(client));
         mSpinnerToAccount.setAdapter(mAdapterToAccount);
         mSpinnerToAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -136,8 +144,8 @@ public class TransactionActivity extends BaseActivity {
         });
     }
 
-    private void updateToAccSpinner(List<AccountEntity> accountEntities) {
-        mAdapterToAccount.updateData(accountEntities);
+    private void updateToAccSpinner(ClientEntity client) {
+        mAdapterToAccount.updateData(mClientEntityMultimap.get(client));
     }
 
     private void executeTransaction() {

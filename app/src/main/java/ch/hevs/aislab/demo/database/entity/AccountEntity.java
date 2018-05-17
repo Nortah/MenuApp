@@ -4,10 +4,6 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import java.io.Serializable;
 
 import ch.hevs.aislab.demo.model.Account;
 
@@ -36,7 +32,7 @@ import ch.hevs.aislab.demo.model.Account;
                 value = {"owner"}
         )}
 )
-public class AccountEntity implements Account, Parcelable {
+public class AccountEntity implements Account {
     @PrimaryKey(autoGenerate = true)
     private Long id;
     private String name;
@@ -101,40 +97,5 @@ public class AccountEntity implements Account, Parcelable {
     @Override
     public String toString() {
         return name;
-    }
-
-    // Everything below this is part of the Parcelable implementation:
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel out, int i) {
-        // The order here must be mirrored in the parcel constructor!
-        out.writeLong(id);
-        out.writeString(name);
-        out.writeDouble(balance);
-        out.writeString(owner);
-    }
-
-    // this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
-    public static final Parcelable.Creator<AccountEntity> CREATOR = new Parcelable.Creator<AccountEntity>() {
-        public AccountEntity createFromParcel(Parcel in) {
-            return new AccountEntity(in);
-        }
-
-        public AccountEntity[] newArray(int size) {
-            return new AccountEntity[size];
-        }
-    };
-
-    // example constructor that takes a Parcel and gives you an object populated with it's values
-    private AccountEntity(Parcel in) {
-        // This order must be the same as in the "writeToParcel" method!
-        id = in.readLong();
-        name = in.readString();
-        balance = in.readDouble();
-        owner = in.readString();
     }
 }
