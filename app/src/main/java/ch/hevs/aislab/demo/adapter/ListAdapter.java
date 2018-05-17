@@ -65,6 +65,10 @@ public class ListAdapter<T> extends ArrayAdapter<T> {
         TextView itemView;
     }
 
+    /*
+    Todo: Might want to use DiffUtil as in the RecyclerAdapter.
+    This would increase the performance by a bit.
+     */
     public void updateData(List<T> data) {
         mData = data;
         notifyDataSetChanged();

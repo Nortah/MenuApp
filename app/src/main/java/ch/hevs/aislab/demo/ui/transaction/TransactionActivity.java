@@ -31,14 +31,7 @@ public class TransactionActivity extends BaseActivity {
     private AccountEntity mFromAccount;
     private AccountEntity mToAccount;
 
-    private List<AccountEntity> mOwnAccounts;
-    private List<ClientAccounts> mClientAccounts;
-
     private SortedMap<ClientEntity, List<AccountEntity>> mClientEntityMultimap;
-
-    private Spinner mSpinnerFromAccount;
-    private Spinner mSpinnerToClient;
-    private Spinner mSpinnerToAccount;
 
     private ListAdapter<AccountEntity> mAdapterFromAccount;
     private ListAdapter<ClientEntity> mAdapterClient;
@@ -54,6 +47,8 @@ public class TransactionActivity extends BaseActivity {
         setTitle(getString(R.string.title_activity_transaction));
         navigationView.setCheckedItem(position);
 
+        setupFromAccSpinner();
+        setupToAccSpinner();
         setupViewModels();
 
         final Toast toast = Toast.makeText(this, getString(R.string.transaction_executed), Toast.LENGTH_LONG);
@@ -68,32 +63,39 @@ public class TransactionActivity extends BaseActivity {
         SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
         String user = settings.getString(MainActivity.PREFS_USER, null);
 
-        mClientAccounts = new ArrayList<>();
-        mOwnAccounts = new ArrayList<>();
-
         AccountListViewModel.Factory factory = new AccountListViewModel.Factory(
                 getApplication(), user);
         mViewModel = ViewModelProviders.of(this, factory).get(AccountListViewModel.class);
         mViewModel.getOwnAccounts().observe(this, accountEntities -> {
             if (accountEntities != null) {
-                mOwnAccounts = accountEntities;
-                setupFromAccSpinner();
+                updateFromAccSpinner(accountEntities);
             }
         });
 
         mViewModel.getClientAccounts().observe(this, clientAccounts -> {
             if (clientAccounts != null) {
-                mClientAccounts = clientAccounts;
-                setupMap();
+                setupMap(clientAccounts);
             }
         });
     }
 
+    /*
+    This is reinitializing the data for ToClient and ToAccount every time there are changes
+    coming from the ViewModel.
+     */
+    private void setupMap(List<ClientAccounts> clientAccounts) {
+        mClientEntityMultimap = new TreeMap<>();
+        for (ClientAccounts cA : clientAccounts) {
+            mClientEntityMultimap.put(cA.client, cA.accounts);
+        }
+        setupToClientSpinner();
+    }
+
     private void setupFromAccSpinner() {
-        mSpinnerFromAccount = findViewById(R.id.spinner_from);
-        mAdapterFromAccount = new ListAdapter<>(this, R.layout.row_client, mOwnAccounts);
-        mSpinnerFromAccount.setAdapter(mAdapterFromAccount);
-        mSpinnerFromAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        Spinner spinnerFromAccount = findViewById(R.id.spinner_from);
+        mAdapterFromAccount = new ListAdapter<>(this, R.layout.row_client, new ArrayList<>());
+        spinnerFromAccount.setAdapter(mAdapterFromAccount);
+        spinnerFromAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mFromAccount = (AccountEntity) parent.getItemAtPosition(position);
@@ -104,24 +106,16 @@ public class TransactionActivity extends BaseActivity {
         });
     }
 
-    private void setupMap() {
-        mClientEntityMultimap = new TreeMap<>();
-        for (ClientAccounts cA : mClientAccounts) {
-            mClientEntityMultimap.put(cA.client, cA.accounts);
-        }
-        setupToClientSpinner();
-    }
-
     private void setupToClientSpinner() {
-        mSpinnerToClient = findViewById(R.id.spinner_toClient);
+        Spinner spinnerToClient = findViewById(R.id.spinner_toClient);
         mAdapterClient = new ListAdapter<>(this, R.layout.row_client,
                 new ArrayList<>(mClientEntityMultimap.keySet())
         );
-        mSpinnerToClient.setAdapter(mAdapterClient);
-        mSpinnerToClient.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerToClient.setAdapter(mAdapterClient);
+        spinnerToClient.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                setupToAccSpinner((ClientEntity) parent.getItemAtPosition(position));
+                updateToAccSpinner((ClientEntity) parent.getItemAtPosition(position));
             }
 
             @Override
@@ -129,11 +123,11 @@ public class TransactionActivity extends BaseActivity {
         });
     }
 
-    private void setupToAccSpinner(ClientEntity client) {
-        mSpinnerToAccount = findViewById(R.id.spinner_toAcc);
-        mAdapterToAccount = new ListAdapter<>(this, R.layout.row_client, mClientEntityMultimap.get(client));
-        mSpinnerToAccount.setAdapter(mAdapterToAccount);
-        mSpinnerToAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+    private void setupToAccSpinner() {
+        Spinner spinnerToAccount = findViewById(R.id.spinner_toAcc);
+        mAdapterToAccount = new ListAdapter<>(this, R.layout.row_client, new ArrayList<>());
+        spinnerToAccount.setAdapter(mAdapterToAccount);
+        spinnerToAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mToAccount = (AccountEntity) parent.getItemAtPosition(position);
@@ -146,6 +140,10 @@ public class TransactionActivity extends BaseActivity {
 
     private void updateToAccSpinner(ClientEntity client) {
         mAdapterToAccount.updateData(mClientEntityMultimap.get(client));
+    }
+
+    private void updateFromAccSpinner(List<AccountEntity> accounts) {
+        mAdapterFromAccount.updateData(new ArrayList<>(accounts));
     }
 
     private void executeTransaction() {
