@@ -1,4 +1,4 @@
-package ch.hevs.aislab.demo.database.async.client;
+package ch.hevs.aislab.demo.database.async;
 
 import android.app.Application;
 import android.database.sqlite.SQLiteConstraintException;

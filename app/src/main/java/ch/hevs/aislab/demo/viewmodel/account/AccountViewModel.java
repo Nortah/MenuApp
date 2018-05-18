@@ -9,11 +9,8 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
 import ch.hevs.aislab.demo.BasicApp;
-import ch.hevs.aislab.demo.database.async.account.CreateAccount;
-import ch.hevs.aislab.demo.database.async.account.UpdateAccount;
 import ch.hevs.aislab.demo.database.entity.AccountEntity;
 import ch.hevs.aislab.demo.database.repository.AccountRepository;
-import ch.hevs.aislab.demo.util.OnAsyncEventListener;
 
 public class AccountViewModel  extends AndroidViewModel {
 

@@ -1,15 +1,17 @@
 package ch.hevs.aislab.demo.ui.client;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import ch.hevs.aislab.demo.R;
+import ch.hevs.aislab.demo.ui.BaseActivity;
 
-public class ClientActivity extends AppCompatActivity {
+public class ClientActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(R.string.title_activity_client);
+
         setContentView(R.layout.activity_client);
     }
 }

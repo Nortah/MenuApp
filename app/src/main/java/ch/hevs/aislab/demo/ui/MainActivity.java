@@ -8,7 +8,6 @@ import android.support.v7.app.AlertDialog;
 
 import ch.hevs.aislab.demo.R;
 import ch.hevs.aislab.demo.ui.mgmt.LoginActivity;
-import ch.hevs.aislab.demo.ui.util.BaseActivity;
 
 public class MainActivity extends BaseActivity {
 

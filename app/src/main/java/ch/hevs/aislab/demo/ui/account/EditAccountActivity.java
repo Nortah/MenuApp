@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import ch.hevs.aislab.demo.R;
 import ch.hevs.aislab.demo.database.entity.AccountEntity;
-import ch.hevs.aislab.demo.ui.util.BaseActivity;
+import ch.hevs.aislab.demo.ui.BaseActivity;
 import ch.hevs.aislab.demo.ui.MainActivity;
 import ch.hevs.aislab.demo.viewmodel.account.AccountViewModel;
 

@@ -5,13 +5,12 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import ch.hevs.aislab.demo.R;
-import ch.hevs.aislab.demo.database.async.client.CreateClient;
+import ch.hevs.aislab.demo.database.async.CreateClient;
 import ch.hevs.aislab.demo.database.entity.ClientEntity;
 import ch.hevs.aislab.demo.ui.MainActivity;
 import ch.hevs.aislab.demo.util.OnAsyncEventListener;

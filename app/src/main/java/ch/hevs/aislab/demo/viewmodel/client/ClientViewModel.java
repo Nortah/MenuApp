@@ -9,9 +9,6 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
 import ch.hevs.aislab.demo.BasicApp;
-import ch.hevs.aislab.demo.database.async.client.CreateClient;
-import ch.hevs.aislab.demo.database.async.client.DeleteClient;
-import ch.hevs.aislab.demo.database.async.client.UpdateClient;
 import ch.hevs.aislab.demo.database.entity.ClientEntity;
 import ch.hevs.aislab.demo.database.repository.ClientRepository;
 

@@ -7,13 +7,10 @@ import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
-import android.util.Pair;
 
 import java.util.List;
 
 import ch.hevs.aislab.demo.BasicApp;
-import ch.hevs.aislab.demo.database.async.account.DeleteAccount;
-import ch.hevs.aislab.demo.database.async.account.TransactionAccount;
 import ch.hevs.aislab.demo.database.entity.AccountEntity;
 import ch.hevs.aislab.demo.database.pojo.ClientAccounts;
 import ch.hevs.aislab.demo.database.repository.AccountRepository;
