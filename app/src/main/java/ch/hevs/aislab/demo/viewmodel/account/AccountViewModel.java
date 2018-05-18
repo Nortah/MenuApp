@@ -19,22 +19,22 @@ public class AccountViewModel  extends AndroidViewModel {
 
     private static final String TAG = "AccountViewModel";
 
-    private Application mApplication;
+    private AccountRepository mRepository;
 
     // MediatorLiveData can observe other LiveData objects and react on their emissions.
     private final MediatorLiveData<AccountEntity> mObservableAccount;
 
     public AccountViewModel(@NonNull Application application,
-                                   final Long accountId, AccountRepository repository) {
+                                   final Long accountId, AccountRepository accountRepository) {
         super(application);
 
-        mApplication = application;
+        mRepository = accountRepository;
 
         mObservableAccount = new MediatorLiveData<>();
         // set by default null, until we get data from the database.
         mObservableAccount.setValue(null);
 
-        LiveData<AccountEntity> account = repository.getAccount(accountId);
+        LiveData<AccountEntity> account = mRepository.getAccount(accountId);
 
         // observe the changes of the account entity from the database and forward them
         mObservableAccount.addSource(account, mObservableAccount::setValue);
@@ -73,10 +73,10 @@ public class AccountViewModel  extends AndroidViewModel {
     }
 
     public void updateAccount(AccountEntity account) {
-        new UpdateAccount(mApplication).execute(account);
+        mRepository.update(account);
     }
 
     public void createAccount(AccountEntity account) {
-        new CreateAccount(mApplication).execute(account);
+        mRepository.insert(account);
     }
 }

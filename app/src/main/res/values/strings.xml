@@ -82,5 +82,7 @@
     <string name="action_logout">Logout</string>
     <string name="logout_msg">Do you really want to logout?</string>
     <string name="transaction_executed">Transaction executed</string>
+    <string name="transaction_no_selection">Please select a recipient</string>
+    <string name="transaction_no_amount">Please specify an amount</string>
     <string name="action_register">Register</string>
 </resources>

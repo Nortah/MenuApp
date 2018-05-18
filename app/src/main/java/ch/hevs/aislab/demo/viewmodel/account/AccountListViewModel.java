@@ -23,7 +23,7 @@ public class AccountListViewModel extends AndroidViewModel {
 
     private static final String TAG = "AccountListViewModel";
 
-    private Application mApplication;
+    private AccountRepository mRepository;
 
     // MediatorLiveData can observe other LiveData objects and react on their emissions.
     private final MediatorLiveData<List<ClientAccounts>> mObservableClientAccounts;
@@ -33,7 +33,7 @@ public class AccountListViewModel extends AndroidViewModel {
                                 final String ownerId, ClientRepository clientRepository, AccountRepository accountRepository) {
         super(application);
 
-        mApplication = application;
+        mRepository = accountRepository;
 
         mObservableClientAccounts = new MediatorLiveData<>();
         mObservableOwnAccounts = new MediatorLiveData<>();
@@ -42,7 +42,7 @@ public class AccountListViewModel extends AndroidViewModel {
         mObservableOwnAccounts.setValue(null);
 
         LiveData<List<ClientAccounts>> clientAccounts = clientRepository.getOtherClientsWithAccounts(ownerId);
-        LiveData<List<AccountEntity>> ownAccounts = accountRepository.getByOwner(ownerId);
+        LiveData<List<AccountEntity>> ownAccounts = mRepository.getByOwner(ownerId);
 
         // observe the changes of the entities from the database and forward them
         mObservableClientAccounts.addSource(clientAccounts, mObservableClientAccounts::setValue);
@@ -92,11 +92,10 @@ public class AccountListViewModel extends AndroidViewModel {
     }
 
     public void deleteAccount(AccountEntity account) {
-        new DeleteAccount(mApplication).execute(account);
+        mRepository.delete(account);
     }
 
     public void executeTransaction(final AccountEntity sender, final AccountEntity recipient) {
-        //noinspection unchecked
-        new TransactionAccount(mApplication).execute(new Pair<>(sender, recipient));
+        mRepository.transaction(sender, recipient);
     }
 }

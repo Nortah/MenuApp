@@ -28,13 +28,12 @@ public class TransactionActivity extends BaseActivity {
 
     private final String TAG = "TransactionFragment";
 
-    private AccountEntity mFromAccount;
-    private AccountEntity mToAccount;
+    private Spinner mSpinnerFromAccount;
+    private Spinner mSpinnerToAccount;
 
     private SortedMap<ClientEntity, List<AccountEntity>> mClientEntityMultimap;
 
     private ListAdapter<AccountEntity> mAdapterFromAccount;
-    private ListAdapter<ClientEntity> mAdapterClient;
     private ListAdapter<AccountEntity> mAdapterToAccount;
 
     private AccountListViewModel mViewModel;
@@ -54,8 +53,9 @@ public class TransactionActivity extends BaseActivity {
         final Toast toast = Toast.makeText(this, getString(R.string.transaction_executed), Toast.LENGTH_LONG);
         Button transactionBtn = findViewById(R.id.btn_transaction);
         transactionBtn.setOnClickListener(view -> {
-            executeTransaction();
-            toast.show();
+            if (executeTransaction()) {
+                toast.show();
+            }
         });
     }
 
@@ -92,26 +92,17 @@ public class TransactionActivity extends BaseActivity {
     }
 
     private void setupFromAccSpinner() {
-        Spinner spinnerFromAccount = findViewById(R.id.spinner_from);
+        mSpinnerFromAccount = findViewById(R.id.spinner_from);
         mAdapterFromAccount = new ListAdapter<>(this, R.layout.row_client, new ArrayList<>());
-        spinnerFromAccount.setAdapter(mAdapterFromAccount);
-        spinnerFromAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mFromAccount = (AccountEntity) parent.getItemAtPosition(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) { }
-        });
+        mSpinnerFromAccount.setAdapter(mAdapterFromAccount);
     }
 
     private void setupToClientSpinner() {
         Spinner spinnerToClient = findViewById(R.id.spinner_toClient);
-        mAdapterClient = new ListAdapter<>(this, R.layout.row_client,
+        ListAdapter<ClientEntity> adapterToClient = new ListAdapter<>(this, R.layout.row_client,
                 new ArrayList<>(mClientEntityMultimap.keySet())
         );
-        spinnerToClient.setAdapter(mAdapterClient);
+        spinnerToClient.setAdapter(adapterToClient);
         spinnerToClient.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -124,18 +115,9 @@ public class TransactionActivity extends BaseActivity {
     }
 
     private void setupToAccSpinner() {
-        Spinner spinnerToAccount = findViewById(R.id.spinner_toAcc);
+        mSpinnerToAccount = findViewById(R.id.spinner_toAcc);
         mAdapterToAccount = new ListAdapter<>(this, R.layout.row_client, new ArrayList<>());
-        spinnerToAccount.setAdapter(mAdapterToAccount);
-        spinnerToAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mToAccount = (AccountEntity) parent.getItemAtPosition(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) { }
-        });
+        mSpinnerToAccount.setAdapter(mAdapterToAccount);
     }
 
     private void updateToAccSpinner(ClientEntity client) {
@@ -146,21 +128,38 @@ public class TransactionActivity extends BaseActivity {
         mAdapterFromAccount.updateData(new ArrayList<>(accounts));
     }
 
-    private void executeTransaction() {
+    private boolean executeTransaction() {
         EditText amountEditText = findViewById(R.id.transaction_amount);
-        Double amount = Double.parseDouble(amountEditText.getText().toString());
-        if (amount < 0.0d) {
-            amountEditText.setError(getString(R.string.error_transaction_negativ));
+        String stringAmount = amountEditText.getText().toString();
+        Double amount;
+        if (!stringAmount.isEmpty()) {
+            amount = Double.parseDouble(stringAmount);
+        } else {
+            amountEditText.setError(getString(R.string.transaction_no_amount));
             amountEditText.requestFocus();
-            return;
+            return false;
         }
-        if (mFromAccount.getBalance() - amount < 0.0d) {
-            amountEditText.setError(getString(R.string.error_transaction));
-            amountEditText.requestFocus();
-            return;
+
+        AccountEntity fromAccount = (AccountEntity) mSpinnerFromAccount.getSelectedItem();
+        AccountEntity toAccount = (AccountEntity) mSpinnerToAccount.getSelectedItem();
+        if (fromAccount != null && toAccount != null) {
+            if (amount <= 0.0d) {
+                amountEditText.setError(getString(R.string.error_transaction_negativ));
+                amountEditText.requestFocus();
+                return false;
+            }
+            if (fromAccount.getBalance() - amount < 0.0d) {
+                amountEditText.setError(getString(R.string.error_transaction));
+                amountEditText.requestFocus();
+                return false;
+            }
+            fromAccount.setBalance(fromAccount.getBalance() - amount);
+            toAccount.setBalance(toAccount.getBalance() + amount);
+            mViewModel.executeTransaction(fromAccount, toAccount);
+        } else {
+            Toast.makeText(this, getString(R.string.transaction_no_selection), Toast.LENGTH_LONG).show();
+            return false;
         }
-        mFromAccount.setBalance(mFromAccount.getBalance() - amount);
-        mToAccount.setBalance(mToAccount.getBalance() + amount);
-        mViewModel.executeTransaction(mFromAccount, mToAccount);
+        return true;
     }
 }

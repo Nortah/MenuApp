@@ -3,6 +3,8 @@ package ch.hevs.aislab.demo.database.repository;
 import android.arch.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import ch.hevs.aislab.demo.database.AppDatabase;
 import ch.hevs.aislab.demo.database.entity.ClientEntity;
@@ -14,8 +16,11 @@ public class ClientRepository {
 
     private final AppDatabase mDatabase;
 
+    private Executor mDatabaseIO;
+
     private ClientRepository(final AppDatabase database) {
         mDatabase = database;
+        mDatabaseIO = Executors.newSingleThreadExecutor();
     }
 
     public static ClientRepository getInstance(final AppDatabase database) {
@@ -41,15 +46,21 @@ public class ClientRepository {
         return mDatabase.clientDao().getOtherClientsWithAccounts(owner);
     }
 
-    public long insert(final ClientEntity client) {
-        return mDatabase.clientDao().insert(client);
+    public void insert(final ClientEntity client) {
+        mDatabaseIO.execute(() -> {
+            mDatabase.clientDao().insert(client);
+        });
     }
 
     public void update(final ClientEntity client) {
-        mDatabase.clientDao().update(client);
+        mDatabaseIO.execute(() -> {
+            mDatabase.clientDao().update(client);
+        });
     }
 
     public void delete(final ClientEntity client) {
-        mDatabase.clientDao().delete(client);
+        mDatabaseIO.execute(() -> {
+            mDatabase.clientDao().delete(client);
+        });
     }
 }

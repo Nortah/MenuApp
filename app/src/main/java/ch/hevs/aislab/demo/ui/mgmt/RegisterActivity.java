@@ -43,18 +43,13 @@ public class RegisterActivity extends AppCompatActivity {
         mEtPwd1 = findViewById(R.id.password);
         mEtPwd2 = findViewById(R.id.passwordRep);
         Button saveBtn = findViewById(R.id.editButton);
-        saveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveChanges(
-                        mEtFirstName.getText().toString(),
-                        mEtLastName.getText().toString(),
-                        mEtEmail.getText().toString(),
-                        mEtPwd1.getText().toString(),
-                        mEtPwd2.getText().toString()
-                );
-            }
-        });
+        saveBtn.setOnClickListener(view -> saveChanges(
+                mEtFirstName.getText().toString(),
+                mEtLastName.getText().toString(),
+                mEtEmail.getText().toString(),
+                mEtPwd1.getText().toString(),
+                mEtPwd2.getText().toString()
+        ));
     }
 
     private void saveChanges(String firstName, String lastName, String email, String pwd, String pwd2) {
@@ -75,6 +70,7 @@ public class RegisterActivity extends AppCompatActivity {
         new CreateClient(getApplication(), new OnAsyncEventListener() {
             @Override
             public void onSuccess(Object object) {
+                Log.d(TAG, "createUserWithEmail: success");
                 setResponse(true);
             }
 

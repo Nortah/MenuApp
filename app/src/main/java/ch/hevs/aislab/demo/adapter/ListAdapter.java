@@ -70,7 +70,9 @@ public class ListAdapter<T> extends ArrayAdapter<T> {
     This would increase the performance by a bit.
      */
     public void updateData(List<T> data) {
-        mData = data;
+        mData.clear();
+        mData.addAll(data);
+        //mData = data;
         notifyDataSetChanged();
     }
 }

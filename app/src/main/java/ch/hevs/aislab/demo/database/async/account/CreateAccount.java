@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import ch.hevs.aislab.demo.BasicApp;
 import ch.hevs.aislab.demo.database.entity.AccountEntity;
 
-public class CreateAccount extends AsyncTask<AccountEntity, Void, Long> {
+public class CreateAccount extends AsyncTask<AccountEntity, Void, Void> {
 
     private Application mApplication;
 
@@ -15,7 +15,8 @@ public class CreateAccount extends AsyncTask<AccountEntity, Void, Long> {
     }
 
     @Override
-    protected Long doInBackground(AccountEntity... params) {
-        return ((BasicApp) mApplication).getAccountRepository().insert(params[0]);
+    protected Void doInBackground(AccountEntity... params) {
+        ((BasicApp) mApplication).getAccountRepository().insert(params[0]);
+        return null;
     }
 }

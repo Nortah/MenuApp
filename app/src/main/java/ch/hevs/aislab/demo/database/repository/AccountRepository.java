@@ -3,7 +3,10 @@ package ch.hevs.aislab.demo.database.repository;
 import android.arch.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
+import ch.hevs.aislab.demo.BasicApp;
 import ch.hevs.aislab.demo.database.AppDatabase;
 import ch.hevs.aislab.demo.database.entity.AccountEntity;
 
@@ -12,8 +15,11 @@ public class AccountRepository {
 
     private final AppDatabase mDatabase;
 
+    private Executor mDatabaseIO;
+
     private AccountRepository(final AppDatabase database) {
         mDatabase = database;
+        mDatabaseIO = Executors.newSingleThreadExecutor();
     }
 
     public static AccountRepository getInstance(final AppDatabase database) {
@@ -39,19 +45,27 @@ public class AccountRepository {
         return mDatabase.accountDao().getOwned(owner);
     }
 
-    public long insert(final AccountEntity account) {
-        return mDatabase.accountDao().insert(account);
+    public void insert(final AccountEntity account) {
+        mDatabaseIO.execute(() -> {
+            mDatabase.accountDao().insert(account);
+        });
     }
 
     public void update(final AccountEntity account) {
-        mDatabase.accountDao().update(account);
+        mDatabaseIO.execute(() -> {
+            mDatabase.accountDao().update(account);
+        });
     }
 
     public void delete(final AccountEntity account) {
-        mDatabase.accountDao().delete(account);
+        mDatabaseIO.execute(() -> {
+            mDatabase.accountDao().delete(account);
+        });
     }
 
     public void transaction(final AccountEntity sender, final AccountEntity recipient) {
-        mDatabase.accountDao().transaction(sender, recipient);
+        mDatabaseIO.execute(() -> {
+            mDatabase.accountDao().transaction(sender, recipient);
+        });
     }
 }
