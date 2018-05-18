@@ -43,6 +43,7 @@
     <string name="client_firstName">First Name</string>
     <string name="action_create">Create</string>
     <string name="action_update">Save Changes</string>
+    <string name="action_edit">Edit</string>
     <string name="action_delete">Delete</string>
     <string name="toggle_admin" translatable="false">Admin</string>
     <string name="client_repeat_password">Repeat Password</string>
