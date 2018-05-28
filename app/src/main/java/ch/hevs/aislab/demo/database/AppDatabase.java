@@ -87,12 +87,20 @@ public abstract class AppDatabase extends RoomDatabase {
         mIsDatabaseCreated.postValue(true);
     }
 
-    private static void insertData(final AppDatabase database, final List<ClientEntity> clients,
+    public static void insertData(final AppDatabase database, final List<ClientEntity> clients,
                                    final List<AccountEntity> accounts) {
         database.runInTransaction(() -> {
             Log.i(TAG, "Insert demo data.");
             database.clientDao().insertAll(clients);
             database.accountDao().insertAll(accounts);
+        });
+    }
+
+    public static void clearData(final AppDatabase database) {
+        database.runInTransaction(() -> {
+            Log.i(TAG, "Wipe database.");
+            database.clientDao().deleteAll();
+            database.accountDao().deleteAll();
         });
     }
 

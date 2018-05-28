@@ -1,8 +1,12 @@
 package ch.hevs.aislab.demo.ui.client;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.view.GravityCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,8 +21,11 @@ import ch.hevs.aislab.demo.database.async.CreateClient;
 import ch.hevs.aislab.demo.database.entity.ClientEntity;
 import ch.hevs.aislab.demo.ui.BaseActivity;
 import ch.hevs.aislab.demo.ui.MainActivity;
+import ch.hevs.aislab.demo.ui.mgmt.LoginActivity;
 import ch.hevs.aislab.demo.util.OnAsyncEventListener;
 import ch.hevs.aislab.demo.viewmodel.client.ClientViewModel;
+
+import static ch.hevs.aislab.demo.ui.MainActivity.PREFS_USER;
 
 public class ClientActivity extends BaseActivity {
 
@@ -51,7 +58,7 @@ public class ClientActivity extends BaseActivity {
         initiateView();
 
         SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
-        String user = settings.getString(MainActivity.PREFS_USER, null);
+        String user = settings.getString(PREFS_USER, null);
 
         ClientViewModel.Factory factory = new ClientViewModel.Factory(getApplication(), user);
         mViewModel = ViewModelProviders.of(this, factory).get(ClientViewModel.class);
@@ -61,6 +68,19 @@ public class ClientActivity extends BaseActivity {
                 updateContent();
             }
         });
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == BaseActivity.position) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+            return false;
+        }
+        /*
+        The activity has to be finished manually in order to guarantee the navigation hierarchy working.
+        */
+        finish();
+        return super.onNavigationItemSelected(item);
     }
 
     @Override
@@ -85,10 +105,19 @@ public class ClientActivity extends BaseActivity {
                 item.setIcon(R.drawable.ic_done_white_24dp);
                 switchEditableMode();
             }
-
         }
         if (item.getItemId() == DELETE_CLIENT) {
-            //TODO: Ask if client rly should be deleted -> Delete it.
+            final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            alertDialog.setTitle(getString(R.string.action_delete));
+            alertDialog.setCancelable(false);
+            alertDialog.setMessage(getString(R.string.delete_msg));
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.action_delete), (dialog, which) -> {
+                mViewModel.deleteClient(mClient);
+                // TODO: Add Callback AsyncTask maybe?
+                logout();
+            });
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.action_cancel), (dialog, which) -> alertDialog.dismiss());
+            alertDialog.show();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -100,7 +129,6 @@ public class ClientActivity extends BaseActivity {
         mEtEmail = findViewById(R.id.email);
         mEtPwd1 = findViewById(R.id.password);
         mEtPwd2 = findViewById(R.id.passwordRep);
-        Button saveBtn = findViewById(R.id.editButton);
     }
 
     private void switchEditableMode() {
@@ -162,7 +190,6 @@ public class ClientActivity extends BaseActivity {
         mClient.setLastName(lastName);
         mClient.setPassword(pwd);
         mViewModel.updateClient(mClient);
-        updateContent();
 
         ClientEntity newClient = new ClientEntity(email, firstName, lastName, pwd);
 
@@ -183,10 +210,22 @@ public class ClientActivity extends BaseActivity {
 
     private void setResponse(Boolean response) {
         if (response) {
-            //TODO: Update view with new data.
+            updateContent();
+            mToast.show();
         } else {
             mEtEmail.setError(getString(R.string.error_used_email));
             mEtEmail.requestFocus();
         }
+    }
+
+    private void logout() {
+        SharedPreferences.Editor editor = getSharedPreferences(MainActivity.PREFS_NAME, 0).edit();
+        editor.remove(PREFS_USER);
+        editor.apply();
+
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
     }
 }

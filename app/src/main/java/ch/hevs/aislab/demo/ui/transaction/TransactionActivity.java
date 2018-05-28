@@ -3,6 +3,9 @@ package ch.hevs.aislab.demo.ui.transaction;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.view.GravityCompat;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -57,6 +60,19 @@ public class TransactionActivity extends BaseActivity {
                 toast.show();
             }
         });
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == BaseActivity.position) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+            return false;
+        }
+        /*
+        The activity has to be finished manually in order to guarantee the navigation hierarchy working.
+        */
+        finish();
+        return super.onNavigationItemSelected(item);
     }
 
     private void setupViewModels() {

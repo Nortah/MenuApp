@@ -10,7 +10,7 @@
     <string name="title_activity_accounts">Accounts</string>
     <string name="disclaimer" translatable="false">Copyright &#169; 2017\nHES-SO Valais//Wallis Sierre</string>
     <string name="impressum" translatable="false">644-1 Mobile &amp; Cloud Computing</string>
-    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_login">Login</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -82,8 +82,10 @@
     <string name="pref_title_language">Change your display language</string>
     <string name="action_logout">Logout</string>
     <string name="logout_msg">Do you really want to logout?</string>
+    <string name="delete_msg">Do you really want to delete your client account?</string>
     <string name="transaction_executed">Transaction executed</string>
     <string name="transaction_no_selection">Please select a recipient</string>
     <string name="transaction_no_amount">Please specify an amount</string>
     <string name="action_register">Register</string>
+    <string name="action_demo_data">Reset Demo Data</string>
 </resources>

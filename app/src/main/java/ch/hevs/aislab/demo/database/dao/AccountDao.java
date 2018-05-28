@@ -40,6 +40,9 @@ public abstract class AccountDao {
     @Delete
     public abstract void delete(AccountEntity account);
 
+    @Query("DELETE FROM accounts")
+    public abstract void deleteAll();
+
     /**
      * There's currently no way to add additional constraints (beside ForeignKey) to columns.
      *

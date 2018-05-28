@@ -49,4 +49,7 @@ public interface ClientDao {
 
     @Delete
     void delete(ClientEntity client);
+
+    @Query("DELETE FROM clients")
+    void deleteAll();
 }

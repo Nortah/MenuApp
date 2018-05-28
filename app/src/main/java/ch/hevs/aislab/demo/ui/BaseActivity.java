@@ -24,7 +24,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     /**
      *  Frame layout: Which is going to be used as parent layout for child activity layout.
      *  This layout is protected so that child activity can access this
-     *  */
+     */
     protected FrameLayout frameLayout;
 
     protected DrawerLayout drawerLayout;
@@ -33,7 +33,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
     /**
      * Static variable for selected item position. Which can be used in child activity to know which item is selected from the list.
-     * */
+     */
     protected static int position;
 
     @Override
@@ -56,11 +56,17 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
             return;
         }
+        BaseActivity.position = 0;
         super.onBackPressed();
     }
 
@@ -106,6 +112,11 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             intent = new Intent(this, TransactionActivity.class);
         }
         if (intent != null) {
+            intent.setFlags(
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                    Intent.FLAG_ACTIVITY_NEW_TASK |
+                    Intent.FLAG_ACTIVITY_NO_ANIMATION
+            );
             startActivity(intent);
         }
         drawerLayout.closeDrawer(GravityCompat.START);

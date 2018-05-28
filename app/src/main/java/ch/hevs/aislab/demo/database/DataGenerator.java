@@ -9,7 +9,7 @@ import ch.hevs.aislab.demo.database.entity.ClientEntity;
 /**
  * Generates dummy data
  */
-class DataGenerator {
+public class DataGenerator {
 
     public static List<ClientEntity> generateClients() {
         List<ClientEntity> clients = new ArrayList<>();

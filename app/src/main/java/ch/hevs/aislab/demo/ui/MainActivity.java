@@ -3,8 +3,10 @@ package ch.hevs.aislab.demo.ui;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AlertDialog;
+import android.view.MenuItem;
 
 import ch.hevs.aislab.demo.R;
 import ch.hevs.aislab.demo.ui.mgmt.LoginActivity;
@@ -27,6 +29,13 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        setTitle(getString(R.string.app_name));
+        navigationView.setCheckedItem(R.id.nav_none);
+    }
+
+    @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
@@ -43,7 +52,7 @@ public class MainActivity extends BaseActivity {
 
     private void logout() {
         SharedPreferences.Editor editor = getSharedPreferences(MainActivity.PREFS_NAME, 0).edit();
-        editor.remove(PREFS_USER);
+        editor.remove(MainActivity.PREFS_USER);
         editor.apply();
 
         Intent intent = new Intent(this, LoginActivity.class);

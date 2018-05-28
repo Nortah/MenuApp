@@ -12,11 +12,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
+import java.util.List;
+import java.util.concurrent.Executors;
+
 import ch.hevs.aislab.demo.BasicApp;
 import ch.hevs.aislab.demo.R;
+import ch.hevs.aislab.demo.database.AppDatabase;
+import ch.hevs.aislab.demo.database.DataGenerator;
+import ch.hevs.aislab.demo.database.entity.AccountEntity;
+import ch.hevs.aislab.demo.database.entity.ClientEntity;
 import ch.hevs.aislab.demo.database.repository.ClientRepository;
 import ch.hevs.aislab.demo.ui.MainActivity;
 import ch.hevs.aislab.demo.util.LocaleManager;
+
+import static ch.hevs.aislab.demo.database.AppDatabase.clearData;
+import static ch.hevs.aislab.demo.database.AppDatabase.insertData;
 
 /**
  * A login screen that offers login via email/password.
@@ -34,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle(R.string.app_name);
+        setTitle(R.string.title_activity_login);
 
         String lang = getSharedPreferences(MainActivity.PREFS_NAME, 0).getString(MainActivity.PREFS_LNG, "en");
         LocaleManager.updateLanguage(this, lang);
@@ -49,11 +59,14 @@ public class LoginActivity extends AppCompatActivity {
 
         mPasswordView = findViewById(R.id.password);
 
-        Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(view -> attemptLogin());
+        Button emailSignInButton = findViewById(R.id.email_sign_in_button);
+        emailSignInButton.setOnClickListener(view -> attemptLogin());
 
-        Button mRegisterButton = findViewById(R.id.register_button);
-        mRegisterButton.setOnClickListener(view -> startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
+        Button registerButton = findViewById(R.id.register_button);
+        registerButton.setOnClickListener(view -> startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
+
+        Button demoDataButton = findViewById(R.id.demo_data_button);
+        demoDataButton.setOnClickListener(view -> reinitializeDatabase());
     }
 
     @Override
@@ -144,6 +157,19 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean isPasswordValid(String password) {
         return password.length() > 4;
+    }
+
+    private void reinitializeDatabase() {
+        Executors.newSingleThreadExecutor().execute(() -> {
+            AppDatabase database = AppDatabase.getInstance(this);
+            // Wipe current database
+            clearData(database);
+            // Generate the data for pre-population
+            List<ClientEntity> clients = DataGenerator.generateClients();
+            List<AccountEntity> accounts =
+                    DataGenerator.generateAccountsForClients(clients);
+            insertData(database, clients, accounts);
+        });
     }
 }
 
