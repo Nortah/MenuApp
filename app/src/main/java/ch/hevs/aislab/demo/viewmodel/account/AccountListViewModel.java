@@ -7,14 +7,19 @@ import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
+import android.util.Log;
+import android.util.Pair;
 
 import java.util.List;
 
 import ch.hevs.aislab.demo.BaseApp;
+import ch.hevs.aislab.demo.database.async.account.DeleteAccount;
+import ch.hevs.aislab.demo.database.async.account.Transaction;
 import ch.hevs.aislab.demo.database.entity.AccountEntity;
 import ch.hevs.aislab.demo.database.pojo.ClientAccounts;
 import ch.hevs.aislab.demo.database.repository.AccountRepository;
 import ch.hevs.aislab.demo.database.repository.ClientRepository;
+import ch.hevs.aislab.demo.util.OnAsyncEventListener;
 
 public class AccountListViewModel extends AndroidViewModel {
 
@@ -89,10 +94,30 @@ public class AccountListViewModel extends AndroidViewModel {
     }
 
     public void deleteAccount(AccountEntity account) {
-        mRepository.delete(account);
+        new DeleteAccount(getApplication(), new OnAsyncEventListener() {
+            @Override
+            public void onSuccess(Object object) {
+                Log.d(TAG, "deleteAccount: success");
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Log.d(TAG, "deleteAccount: failure", e);
+            }
+        }).execute(account);
     }
 
     public void executeTransaction(final AccountEntity sender, final AccountEntity recipient) {
-        mRepository.transaction(sender, recipient);
+        new Transaction(getApplication(), new OnAsyncEventListener() {
+            @Override
+            public void onSuccess(Object object) {
+                Log.d(TAG, "transaction: success");
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Log.d(TAG, "transaction: failure", e);
+            }
+        }).execute(new Pair<>(sender, recipient));
     }
 }

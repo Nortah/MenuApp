@@ -14,7 +14,7 @@ import ch.hevs.aislab.demo.viewmodel.account.AccountViewModel;
 
 public class EditAccountActivity extends BaseActivity {
 
-    private final String TAG = "EditAccountFragment";
+    private final String TAG = "EditAccountActivity";
 
     private AccountEntity mAccount;
     private String mOwner;

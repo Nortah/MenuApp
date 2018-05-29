@@ -1,7 +1,6 @@
 package ch.hevs.aislab.demo.ui.client;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,10 +15,10 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import ch.hevs.aislab.demo.R;
-import ch.hevs.aislab.demo.database.async.CreateClient;
+import ch.hevs.aislab.demo.database.async.client.CreateClient;
+import ch.hevs.aislab.demo.database.async.client.DeleteClient;
 import ch.hevs.aislab.demo.database.entity.ClientEntity;
 import ch.hevs.aislab.demo.ui.BaseActivity;
-import ch.hevs.aislab.demo.ui.mgmt.LoginActivity;
 import ch.hevs.aislab.demo.util.OnAsyncEventListener;
 import ch.hevs.aislab.demo.viewmodel.client.ClientViewModel;
 
@@ -108,9 +107,18 @@ public class ClientActivity extends BaseActivity {
             alertDialog.setCancelable(false);
             alertDialog.setMessage(getString(R.string.delete_msg));
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.action_delete), (dialog, which) -> {
-                mViewModel.deleteClient(mClient);
-                // TODO: Add Callback AsyncTask maybe?
-                logout();
+                new DeleteClient(getApplication(), new OnAsyncEventListener() {
+                    @Override
+                    public void onSuccess(Object object) {
+                        logout();
+                        Log.d(TAG, "deleteUser: success");
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        Log.d(TAG, "deleteUser: failure", e);
+                    }
+                }).execute(mClient);
             });
             alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.action_cancel), (dialog, which) -> alertDialog.dismiss());
             alertDialog.show();

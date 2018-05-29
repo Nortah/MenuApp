@@ -14,11 +14,8 @@ public class AccountRepository {
 
     private final AppDatabase mDatabase;
 
-    private Executor mDatabaseIO;
-
     private AccountRepository(final AppDatabase database) {
         mDatabase = database;
-        mDatabaseIO = Executors.newSingleThreadExecutor();
     }
 
     public static AccountRepository getInstance(final AppDatabase database) {
@@ -45,26 +42,18 @@ public class AccountRepository {
     }
 
     public void insert(final AccountEntity account) {
-        mDatabaseIO.execute(() -> {
-            mDatabase.accountDao().insert(account);
-        });
+        mDatabase.accountDao().insert(account);
     }
 
     public void update(final AccountEntity account) {
-        mDatabaseIO.execute(() -> {
-            mDatabase.accountDao().update(account);
-        });
+        mDatabase.accountDao().update(account);
     }
 
     public void delete(final AccountEntity account) {
-        mDatabaseIO.execute(() -> {
-            mDatabase.accountDao().delete(account);
-        });
+        mDatabase.accountDao().delete(account);
     }
 
     public void transaction(final AccountEntity sender, final AccountEntity recipient) {
-        mDatabaseIO.execute(() -> {
-            mDatabase.accountDao().transaction(sender, recipient);
-        });
+        mDatabase.accountDao().transaction(sender, recipient);
     }
 }

@@ -7,10 +7,14 @@ import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import ch.hevs.aislab.demo.BaseApp;
+import ch.hevs.aislab.demo.database.async.account.CreateAccount;
+import ch.hevs.aislab.demo.database.async.account.UpdateAccount;
 import ch.hevs.aislab.demo.database.entity.AccountEntity;
 import ch.hevs.aislab.demo.database.repository.AccountRepository;
+import ch.hevs.aislab.demo.util.OnAsyncEventListener;
 
 public class AccountViewModel  extends AndroidViewModel {
 
@@ -70,10 +74,30 @@ public class AccountViewModel  extends AndroidViewModel {
     }
 
     public void updateAccount(AccountEntity account) {
-        mRepository.update(account);
+        new UpdateAccount(getApplication(), new OnAsyncEventListener() {
+            @Override
+            public void onSuccess(Object object) {
+                Log.d(TAG, "updateAccount: success");
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Log.d(TAG, "updateAccount: failure", e);
+            }
+        }).execute(account);
     }
 
     public void createAccount(AccountEntity account) {
-        mRepository.insert(account);
+        new CreateAccount(getApplication(), new OnAsyncEventListener() {
+            @Override
+            public void onSuccess(Object object) {
+                Log.d(TAG, "createAccount: success");
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Log.d(TAG, "createAccount: failure", e);
+            }
+        }).execute(account);
     }
 }

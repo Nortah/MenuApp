@@ -1,4 +1,4 @@
-package ch.hevs.aislab.demo.database.async;
+package ch.hevs.aislab.demo.database.async.client;
 
 import android.app.Application;
 import android.database.sqlite.SQLiteConstraintException;
@@ -8,15 +8,15 @@ import ch.hevs.aislab.demo.BaseApp;
 import ch.hevs.aislab.demo.database.entity.ClientEntity;
 import ch.hevs.aislab.demo.util.OnAsyncEventListener;
 
-public class CreateClient extends AsyncTask<ClientEntity, Void, Void> {
+public class DeleteClient extends AsyncTask<ClientEntity, Void, Void> {
 
-    private static final String TAG = "CreateClient";
+    private static final String TAG = "DeleteClient";
 
     private Application mApplication;
     private OnAsyncEventListener<Boolean> mCallBack;
     private Exception mException;
 
-    public CreateClient(Application application, OnAsyncEventListener callback) {
+    public DeleteClient(Application application, OnAsyncEventListener callback) {
         mApplication = application;
         mCallBack = callback;
     }
@@ -26,8 +26,8 @@ public class CreateClient extends AsyncTask<ClientEntity, Void, Void> {
         try {
             for (ClientEntity client : params)
                 ((BaseApp) mApplication).getClientRepository()
-                        .insert(client);
-        } catch (SQLiteConstraintException e) {
+                        .delete(client);
+        } catch (Exception e) {
             mException = e;
         }
         return null;

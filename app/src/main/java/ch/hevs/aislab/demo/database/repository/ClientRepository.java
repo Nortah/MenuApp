@@ -16,11 +16,8 @@ public class ClientRepository {
 
     private final AppDatabase mDatabase;
 
-    private Executor mDatabaseIO;
-
     private ClientRepository(final AppDatabase database) {
         mDatabase = database;
-        mDatabaseIO = Executors.newSingleThreadExecutor();
     }
 
     public static ClientRepository getInstance(final AppDatabase database) {
@@ -38,29 +35,19 @@ public class ClientRepository {
         return mDatabase.clientDao().getById(clientId);
     }
 
-    public LiveData<List<ClientEntity>> getClients() {
-        return mDatabase.clientDao().getAll();
-    }
-
     public LiveData<List<ClientAccounts>> getOtherClientsWithAccounts(final String owner) {
         return mDatabase.clientDao().getOtherClientsWithAccounts(owner);
     }
 
     public void insert(final ClientEntity client) {
-        mDatabaseIO.execute(() -> {
-            mDatabase.clientDao().insert(client);
-        });
+        mDatabase.clientDao().insert(client);
     }
 
     public void update(final ClientEntity client) {
-        mDatabaseIO.execute(() -> {
-            mDatabase.clientDao().update(client);
-        });
+        mDatabase.clientDao().update(client);
     }
 
     public void delete(final ClientEntity client) {
-        mDatabaseIO.execute(() -> {
-            mDatabase.clientDao().delete(client);
-        });
+        mDatabase.clientDao().delete(client);
     }
 }
