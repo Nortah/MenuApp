@@ -73,20 +73,6 @@ public class AccountViewModel  extends AndroidViewModel {
         return mObservableAccount;
     }
 
-    public void updateAccount(AccountEntity account) {
-        new UpdateAccount(getApplication(), new OnAsyncEventListener() {
-            @Override
-            public void onSuccess(Object object) {
-                Log.d(TAG, "updateAccount: success");
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                Log.d(TAG, "updateAccount: failure", e);
-            }
-        }).execute(account);
-    }
-
     public void createAccount(AccountEntity account) {
         new CreateAccount(getApplication(), new OnAsyncEventListener() {
             @Override
@@ -97,6 +83,20 @@ public class AccountViewModel  extends AndroidViewModel {
             @Override
             public void onFailure(Exception e) {
                 Log.d(TAG, "createAccount: failure", e);
+            }
+        }).execute(account);
+    }
+
+    public void updateAccount(AccountEntity account) {
+        new UpdateAccount(getApplication(), new OnAsyncEventListener() {
+            @Override
+            public void onSuccess(Object object) {
+                Log.d(TAG, "updateAccount: success");
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Log.d(TAG, "updateAccount: failure", e);
             }
         }).execute(account);
     }

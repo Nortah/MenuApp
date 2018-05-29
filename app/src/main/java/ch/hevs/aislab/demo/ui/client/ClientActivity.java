@@ -17,6 +17,7 @@ import android.widget.Toast;
 import ch.hevs.aislab.demo.R;
 import ch.hevs.aislab.demo.database.async.client.CreateClient;
 import ch.hevs.aislab.demo.database.async.client.DeleteClient;
+import ch.hevs.aislab.demo.database.async.client.UpdateClient;
 import ch.hevs.aislab.demo.database.entity.ClientEntity;
 import ch.hevs.aislab.demo.ui.BaseActivity;
 import ch.hevs.aislab.demo.util.OnAsyncEventListener;
@@ -148,14 +149,13 @@ public class ClientActivity extends BaseActivity {
             mEtEmail.setFocusableInTouchMode(true);
             mEtEmail.requestFocus();
         } else {
-            //TODO: Save changes in DB!
-            /*saveChanges(
+            saveChanges(
                     mEtFirstName.getText().toString(),
                     mEtLastName.getText().toString(),
                     mEtEmail.getText().toString(),
                     mEtPwd1.getText().toString(),
                     mEtPwd2.getText().toString()
-            );*/
+            );
             LinearLayout linearLayout = findViewById(R.id.clientPasswordLayout);
             linearLayout.setVisibility(View.GONE);
             mEtFirstName.setFocusable(false);
@@ -193,23 +193,20 @@ public class ClientActivity extends BaseActivity {
         mClient.setFirstName(firstName);
         mClient.setLastName(lastName);
         mClient.setPassword(pwd);
-        mViewModel.updateClient(mClient);
 
-        ClientEntity newClient = new ClientEntity(email, firstName, lastName, pwd);
-
-        new CreateClient(getApplication(), new OnAsyncEventListener() {
+        new UpdateClient(getApplication(), new OnAsyncEventListener() {
             @Override
             public void onSuccess(Object object) {
-                Log.d(TAG, "editUserWithEmail: success");
+                Log.d(TAG, "updateClient: success");
                 setResponse(true);
             }
 
             @Override
             public void onFailure(Exception e) {
-                Log.d(TAG, "editUserWithEmail: failure", e);
+                Log.d(TAG, "updateClient: failure", e);
                 setResponse(false);
             }
-        }).execute(newClient);
+        }).execute(mClient);
     }
 
     private void setResponse(Boolean response) {

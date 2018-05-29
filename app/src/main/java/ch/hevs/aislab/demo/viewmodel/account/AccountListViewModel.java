@@ -108,6 +108,7 @@ public class AccountListViewModel extends AndroidViewModel {
     }
 
     public void executeTransaction(final AccountEntity sender, final AccountEntity recipient) {
+        //noinspection unchecked
         new Transaction(getApplication(), new OnAsyncEventListener() {
             @Override
             public void onSuccess(Object object) {
@@ -118,6 +119,6 @@ public class AccountListViewModel extends AndroidViewModel {
             public void onFailure(Exception e) {
                 Log.d(TAG, "transaction: failure", e);
             }
-        }).execute(new Pair<>(sender, recipient));
+        }).execute(Pair.create(sender, recipient));
     }
 }

@@ -11,6 +11,7 @@ import android.util.Log;
 
 import ch.hevs.aislab.demo.BaseApp;
 import ch.hevs.aislab.demo.database.async.account.UpdateAccount;
+import ch.hevs.aislab.demo.database.async.client.CreateClient;
 import ch.hevs.aislab.demo.database.async.client.DeleteClient;
 import ch.hevs.aislab.demo.database.async.client.UpdateClient;
 import ch.hevs.aislab.demo.database.entity.ClientEntity;
@@ -72,33 +73,5 @@ public class ClientViewModel extends AndroidViewModel {
      */
     public LiveData<ClientEntity> getClient() {
         return mObservableClient;
-    }
-
-    public void updateClient(ClientEntity client) {
-        new UpdateClient(getApplication(), new OnAsyncEventListener() {
-            @Override
-            public void onSuccess(Object object) {
-                Log.d(TAG, "updateClient: success");
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                Log.d(TAG, "updateClient: failure", e);
-            }
-        }).execute(client);
-    }
-
-    public void deleteClient(ClientEntity client) {
-        new DeleteClient(getApplication(), new OnAsyncEventListener() {
-            @Override
-            public void onSuccess(Object object) {
-                Log.d(TAG, "deleteClient: success");
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                Log.d(TAG, "deleteClient: failure", e);
-            }
-        }).execute(client);
     }
 }
