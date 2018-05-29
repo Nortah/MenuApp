@@ -8,16 +8,13 @@ import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 
+import ch.hevs.aislab.demo.BaseApp;
 import ch.hevs.aislab.demo.R;
 import ch.hevs.aislab.demo.ui.mgmt.LoginActivity;
 
 public class MainActivity extends BaseActivity {
 
     private final String TAG = "MainActivity";
-
-    public static final String PREFS_NAME = "SharedPrefs";
-    public static final String PREFS_USER = "LoggedIn";
-    public static final String PREFS_LNG = "Language";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,16 +45,5 @@ public class MainActivity extends BaseActivity {
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.action_logout), (dialog, which) -> logout());
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.action_cancel), (dialog, which) -> alertDialog.dismiss());
         alertDialog.show();
-    }
-
-    private void logout() {
-        SharedPreferences.Editor editor = getSharedPreferences(MainActivity.PREFS_NAME, 0).edit();
-        editor.remove(MainActivity.PREFS_USER);
-        editor.apply();
-
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        startActivity(intent);
     }
 }

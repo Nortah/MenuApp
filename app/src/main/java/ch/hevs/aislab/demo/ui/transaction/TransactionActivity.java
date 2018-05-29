@@ -23,7 +23,6 @@ import ch.hevs.aislab.demo.adapter.ListAdapter;
 import ch.hevs.aislab.demo.database.entity.AccountEntity;
 import ch.hevs.aislab.demo.database.entity.ClientEntity;
 import ch.hevs.aislab.demo.database.pojo.ClientAccounts;
-import ch.hevs.aislab.demo.ui.MainActivity;
 import ch.hevs.aislab.demo.ui.BaseActivity;
 import ch.hevs.aislab.demo.viewmodel.account.AccountListViewModel;
 
@@ -76,8 +75,8 @@ public class TransactionActivity extends BaseActivity {
     }
 
     private void setupViewModels() {
-        SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
-        String user = settings.getString(MainActivity.PREFS_USER, null);
+        SharedPreferences settings = getSharedPreferences(BaseActivity.PREFS_NAME, 0);
+        String user = settings.getString(BaseActivity.PREFS_USER, null);
 
         AccountListViewModel.Factory factory = new AccountListViewModel.Factory(
                 getApplication(), user);

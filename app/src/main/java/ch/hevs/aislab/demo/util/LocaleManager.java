@@ -6,7 +6,7 @@ import android.content.res.Configuration;
 
 import java.util.Locale;
 
-import ch.hevs.aislab.demo.ui.MainActivity;
+import ch.hevs.aislab.demo.ui.BaseActivity;
 
 public class LocaleManager {
 
@@ -22,8 +22,8 @@ public class LocaleManager {
             config.locale = locale;
             context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
 
-            SharedPreferences.Editor edit = context.getSharedPreferences(MainActivity.PREFS_NAME, 0).edit();
-            edit.putString(MainActivity.PREFS_LNG, selectedLanguage);
+            SharedPreferences.Editor edit = context.getSharedPreferences(BaseActivity.PREFS_NAME, 0).edit();
+            edit.putString(BaseActivity.PREFS_LNG, selectedLanguage);
             edit.commit();
         }
     }

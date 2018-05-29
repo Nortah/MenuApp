@@ -10,7 +10,7 @@ import android.support.annotation.NonNull;
 
 import java.util.List;
 
-import ch.hevs.aislab.demo.BasicApp;
+import ch.hevs.aislab.demo.BaseApp;
 import ch.hevs.aislab.demo.database.entity.AccountEntity;
 import ch.hevs.aislab.demo.database.pojo.ClientAccounts;
 import ch.hevs.aislab.demo.database.repository.AccountRepository;
@@ -63,8 +63,8 @@ public class AccountListViewModel extends AndroidViewModel {
         public Factory(@NonNull Application application, String ownerId) {
             mApplication = application;
             mOwnerId = ownerId;
-            mClientRepository = ((BasicApp) application).getClientRepository();
-            mAccountRepository = ((BasicApp) application).getAccountRepository();
+            mClientRepository = ((BaseApp) application).getClientRepository();
+            mAccountRepository = ((BaseApp) application).getAccountRepository();
         }
 
         @Override

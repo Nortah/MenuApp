@@ -8,7 +8,7 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
-import ch.hevs.aislab.demo.BasicApp;
+import ch.hevs.aislab.demo.BaseApp;
 import ch.hevs.aislab.demo.database.entity.ClientEntity;
 import ch.hevs.aislab.demo.database.repository.ClientRepository;
 
@@ -52,7 +52,7 @@ public class ClientViewModel extends AndroidViewModel {
         public Factory(@NonNull Application application, String clientId) {
             mApplication = application;
             mClientId = clientId;
-            mRepository = ((BasicApp) application).getClientRepository();
+            mRepository = ((BaseApp) application).getClientRepository();
         }
 
         @Override

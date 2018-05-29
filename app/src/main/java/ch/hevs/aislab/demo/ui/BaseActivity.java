@@ -1,26 +1,37 @@
 package ch.hevs.aislab.demo.ui;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
+import java.lang.ref.WeakReference;
+import java.util.List;
+
 import ch.hevs.aislab.demo.R;
 import ch.hevs.aislab.demo.ui.account.AccountsActivity;
 import ch.hevs.aislab.demo.ui.client.ClientActivity;
+import ch.hevs.aislab.demo.ui.mgmt.LoginActivity;
 import ch.hevs.aislab.demo.ui.mgmt.SettingsActivity;
 import ch.hevs.aislab.demo.ui.transaction.TransactionActivity;
 
 public class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static final String PREFS_NAME = "SharedPrefs";
+    public static final String PREFS_USER = "LoggedIn";
+    public static final String PREFS_LNG = "Language";
     /**
      *  Frame layout: Which is going to be used as parent layout for child activity layout.
      *  This layout is protected so that child activity can access this
@@ -110,6 +121,8 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             intent = new Intent(this, AccountsActivity.class);
         } else if (id == R.id.nav_transaction) {
             intent = new Intent(this, TransactionActivity.class);
+        } else if (id == R.id.nav_logout) {
+            logout();
         }
         if (intent != null) {
             intent.setFlags(
@@ -121,5 +134,16 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void logout() {
+        SharedPreferences.Editor editor = getSharedPreferences(BaseActivity.PREFS_NAME, 0).edit();
+        editor.remove(BaseActivity.PREFS_USER);
+        editor.apply();
+
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
     }
 }

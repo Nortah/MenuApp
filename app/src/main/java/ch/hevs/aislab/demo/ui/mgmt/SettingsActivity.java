@@ -23,7 +23,7 @@ import android.view.View;
 import java.util.List;
 
 import ch.hevs.aislab.demo.R;
-import ch.hevs.aislab.demo.ui.MainActivity;
+import ch.hevs.aislab.demo.ui.BaseActivity;
 import ch.hevs.aislab.demo.util.LocaleManager;
 
 /**
@@ -213,8 +213,8 @@ public class SettingsActivity extends PreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_language);
-            SharedPreferences settings = getActivity().getSharedPreferences(MainActivity.PREFS_NAME, 0);
-            String lang = settings.getString(MainActivity.PREFS_LNG, "en");
+            SharedPreferences settings = getActivity().getSharedPreferences(BaseActivity.PREFS_NAME, 0);
+            String lang = settings.getString(BaseActivity.PREFS_LNG, "en");
             ListPreference langPref = (ListPreference) findPreference("Language");
             if(langPref.getValue().equals("-1")){
                 if (lang.equals("en")) {
@@ -234,7 +234,7 @@ public class SettingsActivity extends PreferenceActivity {
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-            bindPreferenceSummaryToValue(findPreference(MainActivity.PREFS_LNG));
+            bindPreferenceSummaryToValue(findPreference(BaseActivity.PREFS_LNG));
             SharedPreferences prefs = PreferenceManager
                     .getDefaultSharedPreferences(getActivity());
             prefs.registerOnSharedPreferenceChangeListener(this);
@@ -252,7 +252,7 @@ public class SettingsActivity extends PreferenceActivity {
 
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-            String lang = sharedPreferences.getString(MainActivity.PREFS_LNG, "en");
+            String lang = sharedPreferences.getString(BaseActivity.PREFS_LNG, "en");
 
             Log.d(TAG, "changed language to " + lang);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

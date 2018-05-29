@@ -8,7 +8,7 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
-import ch.hevs.aislab.demo.BasicApp;
+import ch.hevs.aislab.demo.BaseApp;
 import ch.hevs.aislab.demo.database.entity.AccountEntity;
 import ch.hevs.aislab.demo.database.repository.AccountRepository;
 
@@ -52,7 +52,7 @@ public class AccountViewModel  extends AndroidViewModel {
         public Factory(@NonNull Application application, Long accountId) {
             mApplication = application;
             mAccountId = accountId;
-            mRepository = ((BasicApp) application).getAccountRepository();
+            mRepository = ((BaseApp) application).getAccountRepository();
         }
 
         @Override

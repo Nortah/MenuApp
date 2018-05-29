@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -20,12 +19,9 @@ import ch.hevs.aislab.demo.R;
 import ch.hevs.aislab.demo.database.async.CreateClient;
 import ch.hevs.aislab.demo.database.entity.ClientEntity;
 import ch.hevs.aislab.demo.ui.BaseActivity;
-import ch.hevs.aislab.demo.ui.MainActivity;
 import ch.hevs.aislab.demo.ui.mgmt.LoginActivity;
 import ch.hevs.aislab.demo.util.OnAsyncEventListener;
 import ch.hevs.aislab.demo.viewmodel.client.ClientViewModel;
-
-import static ch.hevs.aislab.demo.ui.MainActivity.PREFS_USER;
 
 public class ClientActivity extends BaseActivity {
 
@@ -57,7 +53,7 @@ public class ClientActivity extends BaseActivity {
 
         initiateView();
 
-        SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
+        SharedPreferences settings = getSharedPreferences(BaseActivity.PREFS_NAME, 0);
         String user = settings.getString(PREFS_USER, null);
 
         ClientViewModel.Factory factory = new ClientViewModel.Factory(getApplication(), user);
@@ -216,16 +212,5 @@ public class ClientActivity extends BaseActivity {
             mEtEmail.setError(getString(R.string.error_used_email));
             mEtEmail.requestFocus();
         }
-    }
-
-    private void logout() {
-        SharedPreferences.Editor editor = getSharedPreferences(MainActivity.PREFS_NAME, 0).edit();
-        editor.remove(PREFS_USER);
-        editor.apply();
-
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        startActivity(intent);
     }
 }

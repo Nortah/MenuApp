@@ -15,13 +15,14 @@ import android.widget.ProgressBar;
 import java.util.List;
 import java.util.concurrent.Executors;
 
-import ch.hevs.aislab.demo.BasicApp;
+import ch.hevs.aislab.demo.BaseApp;
 import ch.hevs.aislab.demo.R;
 import ch.hevs.aislab.demo.database.AppDatabase;
 import ch.hevs.aislab.demo.database.DataGenerator;
 import ch.hevs.aislab.demo.database.entity.AccountEntity;
 import ch.hevs.aislab.demo.database.entity.ClientEntity;
 import ch.hevs.aislab.demo.database.repository.ClientRepository;
+import ch.hevs.aislab.demo.ui.BaseActivity;
 import ch.hevs.aislab.demo.ui.MainActivity;
 import ch.hevs.aislab.demo.util.LocaleManager;
 
@@ -46,12 +47,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setTitle(R.string.title_activity_login);
 
-        String lang = getSharedPreferences(MainActivity.PREFS_NAME, 0).getString(MainActivity.PREFS_LNG, "en");
+        String lang = getSharedPreferences(BaseActivity.PREFS_NAME, 0).getString(BaseActivity.PREFS_LNG, "en");
         LocaleManager.updateLanguage(this, lang);
 
         setContentView(R.layout.activity_login);
 
-        mRepository = ((BasicApp) getApplication()).getClientRepository();
+        mRepository = ((BaseApp) getApplication()).getClientRepository();
         mProgressBar = findViewById(R.id.progress);
 
         // Set up the login form.
@@ -127,8 +128,8 @@ public class LoginActivity extends AppCompatActivity {
                     if (clientEntity.getPassword().equals(password)) {
                         // We need an Editor object to make preference changes.
                         // All objects are from android.context.Context
-                        SharedPreferences.Editor editor = getSharedPreferences(MainActivity.PREFS_NAME, 0).edit();
-                        editor.putString(MainActivity.PREFS_USER, clientEntity.getEmail());
+                        SharedPreferences.Editor editor = getSharedPreferences(BaseActivity.PREFS_NAME, 0).edit();
+                        editor.putString(BaseActivity.PREFS_USER, clientEntity.getEmail());
                         editor.apply();
 
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);

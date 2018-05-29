@@ -10,7 +10,6 @@ import android.widget.Toast;
 import ch.hevs.aislab.demo.R;
 import ch.hevs.aislab.demo.database.entity.AccountEntity;
 import ch.hevs.aislab.demo.ui.BaseActivity;
-import ch.hevs.aislab.demo.ui.MainActivity;
 import ch.hevs.aislab.demo.viewmodel.account.AccountViewModel;
 
 public class EditAccountActivity extends BaseActivity {
@@ -31,8 +30,8 @@ public class EditAccountActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.activity_edit_account, frameLayout);
 
-        SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
-        mOwner = settings.getString(MainActivity.PREFS_USER, null);
+        SharedPreferences settings = getSharedPreferences(BaseActivity.PREFS_NAME, 0);
+        mOwner = settings.getString(BaseActivity.PREFS_USER, null);
 
         mEtAccountName = findViewById(R.id.accountName);
         mEtAccountName.requestFocus();

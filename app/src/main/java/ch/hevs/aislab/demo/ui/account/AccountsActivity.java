@@ -25,7 +25,6 @@ import ch.hevs.aislab.demo.R;
 import ch.hevs.aislab.demo.adapter.RecyclerAdapter;
 import ch.hevs.aislab.demo.database.entity.AccountEntity;
 import ch.hevs.aislab.demo.ui.BaseActivity;
-import ch.hevs.aislab.demo.ui.MainActivity;
 import ch.hevs.aislab.demo.util.RecyclerViewItemClickListener;
 import ch.hevs.aislab.demo.viewmodel.account.AccountListViewModel;
 
@@ -59,8 +58,8 @@ public class AccountsActivity extends BaseActivity {
                 LinearLayoutManager.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
-        String user = settings.getString(MainActivity.PREFS_USER, null);
+        SharedPreferences settings = getSharedPreferences(BaseActivity.PREFS_NAME, 0);
+        String user = settings.getString(BaseActivity.PREFS_USER, null);
 
         mAccounts = new ArrayList<>();
         mAdapter = new RecyclerAdapter<>(new RecyclerViewItemClickListener() {

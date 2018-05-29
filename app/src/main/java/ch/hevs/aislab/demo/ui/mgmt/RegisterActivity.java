@@ -12,6 +12,7 @@ import android.widget.Toast;
 import ch.hevs.aislab.demo.R;
 import ch.hevs.aislab.demo.database.async.CreateClient;
 import ch.hevs.aislab.demo.database.entity.ClientEntity;
+import ch.hevs.aislab.demo.ui.BaseActivity;
 import ch.hevs.aislab.demo.ui.MainActivity;
 import ch.hevs.aislab.demo.util.OnAsyncEventListener;
 
@@ -83,8 +84,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void setResponse(Boolean response) {
         if (response) {
-            final SharedPreferences.Editor editor = getSharedPreferences(MainActivity.PREFS_NAME, 0).edit();
-            editor.putString(MainActivity.PREFS_USER, mEtEmail.getText().toString());
+            final SharedPreferences.Editor editor = getSharedPreferences(BaseActivity.PREFS_NAME, 0).edit();
+            editor.putString(BaseActivity.PREFS_USER, mEtEmail.getText().toString());
             editor.apply();
             mToast.show();
             Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
