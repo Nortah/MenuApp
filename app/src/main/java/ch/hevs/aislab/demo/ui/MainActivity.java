@@ -1,16 +1,10 @@
 package ch.hevs.aislab.demo.ui;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AlertDialog;
-import android.view.MenuItem;
 
-import ch.hevs.aislab.demo.BaseApp;
 import ch.hevs.aislab.demo.R;
-import ch.hevs.aislab.demo.ui.mgmt.LoginActivity;
 
 public class MainActivity extends BaseActivity {
 

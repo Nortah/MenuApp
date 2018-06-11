@@ -1,7 +1,5 @@
 package ch.hevs.aislab.demo.ui;
 
-import android.app.Activity;
-import android.app.ActivityManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,15 +8,11 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
-
-import java.lang.ref.WeakReference;
-import java.util.List;
 
 import ch.hevs.aislab.demo.R;
 import ch.hevs.aislab.demo.ui.account.AccountsActivity;

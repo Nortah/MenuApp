@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import ch.hevs.aislab.demo.R;
-import ch.hevs.aislab.demo.database.async.client.CreateClient;
 import ch.hevs.aislab.demo.database.async.client.DeleteClient;
 import ch.hevs.aislab.demo.database.async.client.UpdateClient;
 import ch.hevs.aislab.demo.database.entity.ClientEntity;
