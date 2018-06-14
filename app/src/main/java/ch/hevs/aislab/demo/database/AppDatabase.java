@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.List;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import ch.hevs.aislab.demo.database.dao.AccountDao;
@@ -59,13 +58,8 @@ public abstract class AppDatabase extends RoomDatabase {
                     public void onCreate(@NonNull SupportSQLiteDatabase db) {
                         super.onCreate(db);
                         Executors.newSingleThreadExecutor().execute(() -> {
-                            // Generate the data for pre-population
                             AppDatabase database = AppDatabase.getInstance(appContext);
-                            List<ClientEntity> clients = DataGenerator.generateClients();
-                            List<AccountEntity> accounts =
-                                    DataGenerator.generateAccountsForClients(clients);
-
-                            insertData(database, clients, accounts);
+                            initializeDemoData(database);
                             // notify that the database was created and it's ready to be used
                             database.setDatabaseCreated();
                         });
@@ -87,20 +81,35 @@ public abstract class AppDatabase extends RoomDatabase {
         mIsDatabaseCreated.postValue(true);
     }
 
-    public static void insertData(final AppDatabase database, final List<ClientEntity> clients,
-                                   final List<AccountEntity> accounts) {
+    public static void initializeDemoData(final AppDatabase database) {
+        Executors.newSingleThreadExecutor().execute(() -> {
+            database.runInTransaction(() -> {
+                Log.i(TAG, "Wipe database.");
+                database.clientDao().deleteAll();
+                database.accountDao().deleteAll();
+
+                // Generate the data for pre-population
+                List<ClientEntity> clients = DataGenerator.generateClients();
+                List<AccountEntity> accounts =
+                        DataGenerator.generateAccountsForClients(clients);
+
+                Log.i(TAG, "Insert demo data.");
+                database.clientDao().insertAll(clients);
+                database.accountDao().insertAll(accounts);
+            });
+        });
+    }
+
+    public static void insertDemoData(final AppDatabase database) {
+        // Generate the data for pre-population
+        List<ClientEntity> clients = DataGenerator.generateClients();
+        List<AccountEntity> accounts =
+                DataGenerator.generateAccountsForClients(clients);
+
         database.runInTransaction(() -> {
             Log.i(TAG, "Insert demo data.");
             database.clientDao().insertAll(clients);
             database.accountDao().insertAll(accounts);
-        });
-    }
-
-    public static void clearData(final AppDatabase database) {
-        database.runInTransaction(() -> {
-            Log.i(TAG, "Wipe database.");
-            database.clientDao().deleteAll();
-            database.accountDao().deleteAll();
         });
     }
 

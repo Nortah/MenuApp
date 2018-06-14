@@ -7,16 +7,10 @@ import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import ch.hevs.aislab.demo.BaseApp;
-import ch.hevs.aislab.demo.database.async.account.UpdateAccount;
-import ch.hevs.aislab.demo.database.async.client.CreateClient;
-import ch.hevs.aislab.demo.database.async.client.DeleteClient;
-import ch.hevs.aislab.demo.database.async.client.UpdateClient;
 import ch.hevs.aislab.demo.database.entity.ClientEntity;
 import ch.hevs.aislab.demo.database.repository.ClientRepository;
-import ch.hevs.aislab.demo.util.OnAsyncEventListener;
 
 public class ClientViewModel extends AndroidViewModel {
 

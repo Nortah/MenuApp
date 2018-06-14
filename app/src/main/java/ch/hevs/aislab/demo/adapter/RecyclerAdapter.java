@@ -118,7 +118,6 @@ public class RecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerAdapter.Vie
             });
             mData = data;
             result.dispatchUpdatesTo(this);
-            //notifyDataSetChanged();
         }
     }
 }

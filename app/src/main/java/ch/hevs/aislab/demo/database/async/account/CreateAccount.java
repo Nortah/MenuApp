@@ -1,7 +1,6 @@
 package ch.hevs.aislab.demo.database.async.account;
 
 import android.app.Application;
-import android.database.sqlite.SQLiteConstraintException;
 import android.os.AsyncTask;
 
 import ch.hevs.aislab.demo.BaseApp;

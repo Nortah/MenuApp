@@ -11,23 +11,17 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-
-import java.util.List;
-import java.util.concurrent.Executors;
+import android.widget.Toast;
 
 import ch.hevs.aislab.demo.BaseApp;
 import ch.hevs.aislab.demo.R;
 import ch.hevs.aislab.demo.database.AppDatabase;
-import ch.hevs.aislab.demo.database.DataGenerator;
-import ch.hevs.aislab.demo.database.entity.AccountEntity;
-import ch.hevs.aislab.demo.database.entity.ClientEntity;
 import ch.hevs.aislab.demo.database.repository.ClientRepository;
 import ch.hevs.aislab.demo.ui.BaseActivity;
 import ch.hevs.aislab.demo.ui.MainActivity;
 import ch.hevs.aislab.demo.util.LocaleManager;
 
-import static ch.hevs.aislab.demo.database.AppDatabase.clearData;
-import static ch.hevs.aislab.demo.database.AppDatabase.insertData;
+import static ch.hevs.aislab.demo.database.AppDatabase.initializeDemoData;
 
 /**
  * A login screen that offers login via email/password.
@@ -161,16 +155,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void reinitializeDatabase() {
-        Executors.newSingleThreadExecutor().execute(() -> {
-            AppDatabase database = AppDatabase.getInstance(this);
-            // Wipe current database
-            clearData(database);
-            // Generate the data for pre-population
-            List<ClientEntity> clients = DataGenerator.generateClients();
-            List<AccountEntity> accounts =
-                    DataGenerator.generateAccountsForClients(clients);
-            insertData(database, clients, accounts);
-        });
+        initializeDemoData(AppDatabase.getInstance(this));
+        Toast.makeText(this, getString(R.string.demo_data_initiated), Toast.LENGTH_LONG).show();
     }
 }
 

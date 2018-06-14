@@ -177,8 +177,8 @@ public class ClientActivity extends BaseActivity {
 
     private void saveChanges(String firstName, String lastName, String email, String pwd, String pwd2) {
         if (!pwd.equals(pwd2) || pwd.length() < 5) {
-            mEtPwd1.setError(getString(R.string.error_invalid_password));
-            mEtPwd1.requestFocus();
+            mToast = Toast.makeText(this, getString(R.string.error_edit_invalid_password), Toast.LENGTH_LONG);
+            mToast.show();
             mEtPwd1.setText("");
             mEtPwd2.setText("");
             return;
@@ -211,6 +211,7 @@ public class ClientActivity extends BaseActivity {
     private void setResponse(Boolean response) {
         if (response) {
             updateContent();
+            mToast = Toast.makeText(this, getString(R.string.client_edited), Toast.LENGTH_LONG);
             mToast.show();
         } else {
             mEtEmail.setError(getString(R.string.error_used_email));

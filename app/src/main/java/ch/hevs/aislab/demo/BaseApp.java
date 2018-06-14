@@ -1,14 +1,10 @@
 package ch.hevs.aislab.demo;
 
 import android.app.Application;
-import android.content.Intent;
-import android.content.SharedPreferences;
 
 import ch.hevs.aislab.demo.database.AppDatabase;
 import ch.hevs.aislab.demo.database.repository.AccountRepository;
 import ch.hevs.aislab.demo.database.repository.ClientRepository;
-import ch.hevs.aislab.demo.ui.BaseActivity;
-import ch.hevs.aislab.demo.ui.mgmt.LoginActivity;
 
 /**
  * Android Application class. Used for accessing singletons.
