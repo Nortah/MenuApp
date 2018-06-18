@@ -28,7 +28,7 @@ import ch.hevs.aislab.demo.viewmodel.account.AccountListViewModel;
 
 public class TransactionActivity extends BaseActivity {
 
-    private final String TAG = "TransactionFragment";
+    private final String TAG = "TransactionActivity";
 
     private Spinner mSpinnerFromAccount;
     private Spinner mSpinnerToAccount;

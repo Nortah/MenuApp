@@ -2,6 +2,7 @@ package ch.hevs.aislab.demo.ui.mgmt;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -155,8 +156,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void reinitializeDatabase() {
-        initializeDemoData(AppDatabase.getInstance(this));
-        Toast.makeText(this, getString(R.string.demo_data_initiated), Toast.LENGTH_LONG).show();
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle(getString(R.string.action_demo_data));
+        alertDialog.setCancelable(false);
+        alertDialog.setMessage(getString(R.string.reset_msg));
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.action_reset), (dialog, which) ->{
+            initializeDemoData(AppDatabase.getInstance(this));
+            Toast.makeText(this, getString(R.string.demo_data_initiated), Toast.LENGTH_LONG).show();
+        });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.action_cancel), (dialog, which) -> alertDialog.dismiss());
+        alertDialog.show();
     }
 }
 
