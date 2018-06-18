@@ -96,7 +96,7 @@ public class AccountListViewModel extends AndroidViewModel {
     public void deleteAccount(AccountEntity account) {
         new DeleteAccount(getApplication(), new OnAsyncEventListener() {
             @Override
-            public void onSuccess(Object object) {
+            public void onSuccess() {
                 Log.d(TAG, "deleteAccount: success");
             }
 
@@ -111,7 +111,7 @@ public class AccountListViewModel extends AndroidViewModel {
         //noinspection unchecked
         new Transaction(getApplication(), new OnAsyncEventListener() {
             @Override
-            public void onSuccess(Object object) {
+            public void onSuccess() {
                 Log.d(TAG, "transaction: success");
             }
 

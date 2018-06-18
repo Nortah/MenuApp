@@ -76,7 +76,7 @@ public class AccountViewModel  extends AndroidViewModel {
     public void createAccount(AccountEntity account) {
         new CreateAccount(getApplication(), new OnAsyncEventListener() {
             @Override
-            public void onSuccess(Object object) {
+            public void onSuccess() {
                 Log.d(TAG, "createAccount: success");
             }
 
@@ -90,7 +90,7 @@ public class AccountViewModel  extends AndroidViewModel {
     public void updateAccount(AccountEntity account) {
         new UpdateAccount(getApplication(), new OnAsyncEventListener() {
             @Override
-            public void onSuccess(Object object) {
+            public void onSuccess() {
                 Log.d(TAG, "updateAccount: success");
             }
 

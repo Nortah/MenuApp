@@ -12,7 +12,7 @@ public class CreateAccount extends AsyncTask<AccountEntity, Void, Void> {
     private static final String TAG = "CreateAccount";
 
     private Application mApplication;
-    private OnAsyncEventListener<Boolean> mCallBack;
+    private OnAsyncEventListener mCallBack;
     private Exception mException;
 
     public CreateAccount(Application application, OnAsyncEventListener callback) {
@@ -36,7 +36,7 @@ public class CreateAccount extends AsyncTask<AccountEntity, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         if (mCallBack != null) {
             if (mException == null) {
-                mCallBack.onSuccess(null);
+                mCallBack.onSuccess();
             } else {
                 mCallBack.onFailure(mException);
             }

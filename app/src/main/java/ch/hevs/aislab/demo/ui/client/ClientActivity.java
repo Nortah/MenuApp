@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,8 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import ch.hevs.aislab.demo.R;
-import ch.hevs.aislab.demo.database.async.client.DeleteClient;
-import ch.hevs.aislab.demo.database.async.client.UpdateClient;
 import ch.hevs.aislab.demo.database.entity.ClientEntity;
 import ch.hevs.aislab.demo.ui.BaseActivity;
 import ch.hevs.aislab.demo.util.OnAsyncEventListener;
@@ -107,18 +104,15 @@ public class ClientActivity extends BaseActivity {
             alertDialog.setCancelable(false);
             alertDialog.setMessage(getString(R.string.delete_msg));
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.action_delete), (dialog, which) -> {
-                new DeleteClient(getApplication(), new OnAsyncEventListener() {
+                mViewModel.deleteClient(mClient, new OnAsyncEventListener() {
                     @Override
-                    public void onSuccess(Object object) {
+                    public void onSuccess() {
                         logout();
-                        Log.d(TAG, "deleteUser: success");
                     }
 
                     @Override
-                    public void onFailure(Exception e) {
-                        Log.d(TAG, "deleteUser: failure", e);
-                    }
-                }).execute(mClient);
+                    public void onFailure(Exception e) {}
+                });
             });
             alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.action_cancel), (dialog, which) -> alertDialog.dismiss());
             alertDialog.show();
@@ -193,19 +187,17 @@ public class ClientActivity extends BaseActivity {
         mClient.setLastName(lastName);
         mClient.setPassword(pwd);
 
-        new UpdateClient(getApplication(), new OnAsyncEventListener() {
+        mViewModel.updateClient(mClient, new OnAsyncEventListener() {
             @Override
-            public void onSuccess(Object object) {
-                Log.d(TAG, "updateClient: success");
+            public void onSuccess() {
                 setResponse(true);
             }
 
             @Override
             public void onFailure(Exception e) {
-                Log.d(TAG, "updateClient: failure", e);
                 setResponse(false);
             }
-        }).execute(mClient);
+        });
     }
 
     private void setResponse(Boolean response) {

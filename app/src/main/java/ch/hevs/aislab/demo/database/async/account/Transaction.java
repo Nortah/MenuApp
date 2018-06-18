@@ -13,7 +13,7 @@ public class Transaction extends AsyncTask<Pair<AccountEntity, AccountEntity>, V
     private static final String TAG = "Transaction";
 
     private Application mApplication;
-    private OnAsyncEventListener<Boolean> mCallBack;
+    private OnAsyncEventListener mCallBack;
     private Exception mException;
 
     public Transaction(Application application, OnAsyncEventListener callback) {
@@ -37,7 +37,7 @@ public class Transaction extends AsyncTask<Pair<AccountEntity, AccountEntity>, V
     protected void onPostExecute(Void aVoid) {
         if (mCallBack != null) {
             if (mException == null) {
-                mCallBack.onSuccess(null);
+                mCallBack.onSuccess();
             } else {
                 mCallBack.onFailure(mException);
             }

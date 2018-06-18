@@ -7,10 +7,14 @@ import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import ch.hevs.aislab.demo.BaseApp;
+import ch.hevs.aislab.demo.database.async.client.DeleteClient;
+import ch.hevs.aislab.demo.database.async.client.UpdateClient;
 import ch.hevs.aislab.demo.database.entity.ClientEntity;
 import ch.hevs.aislab.demo.database.repository.ClientRepository;
+import ch.hevs.aislab.demo.util.OnAsyncEventListener;
 
 public class ClientViewModel extends AndroidViewModel {
 
@@ -67,5 +71,37 @@ public class ClientViewModel extends AndroidViewModel {
      */
     public LiveData<ClientEntity> getClient() {
         return mObservableClient;
+    }
+
+    public void updateClient(ClientEntity client, OnAsyncEventListener callback) {
+        new UpdateClient(getApplication(), new OnAsyncEventListener() {
+            @Override
+            public void onSuccess() {
+                callback.onSuccess();
+                Log.d(TAG, "updateClient: success");
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                callback.onFailure(e);
+                Log.d(TAG, "updateClient: failure", e);
+            }
+        });
+    }
+
+    public void deleteClient(ClientEntity client, OnAsyncEventListener callback) {
+        new DeleteClient(getApplication(), new OnAsyncEventListener() {
+            @Override
+            public void onSuccess() {
+                callback.onSuccess();
+                Log.d(TAG, "deleteClient: success");
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                callback.onFailure(e);
+                Log.d(TAG, "deleteClient: failure", e);
+            }
+        }).execute(client);
     }
 }
