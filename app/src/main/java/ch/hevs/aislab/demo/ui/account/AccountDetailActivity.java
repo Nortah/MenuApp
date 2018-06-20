@@ -38,6 +38,8 @@ public class AccountDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.activity_account, frameLayout);
 
+        navigationView.setCheckedItem(position);
+
         Long accountId = getIntent().getLongExtra("accountId", 0L);
 
         initiateView();

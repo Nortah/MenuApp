@@ -30,6 +30,8 @@ public class EditAccountActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.activity_edit_account, frameLayout);
 
+        navigationView.setCheckedItem(position);
+
         SharedPreferences settings = getSharedPreferences(BaseActivity.PREFS_NAME, 0);
         mOwner = settings.getString(BaseActivity.PREFS_USER, null);
 

@@ -35,10 +35,10 @@ public class ClientViewModel extends AndroidViewModel {
         // set by default null, until we get data from the database.
         mObservableClient.setValue(null);
 
-        LiveData<ClientEntity> account = mRepository.getClient(clientId);
+        LiveData<ClientEntity> client = mRepository.getClient(clientId);
 
         // observe the changes of the client entity from the database and forward them
-        mObservableClient.addSource(account, mObservableClient::setValue);
+        mObservableClient.addSource(client, mObservableClient::setValue);
     }
 
     /**

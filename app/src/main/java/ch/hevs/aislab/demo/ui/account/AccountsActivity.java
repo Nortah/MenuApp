@@ -69,6 +69,10 @@ public class AccountsActivity extends BaseActivity {
                 Log.d(TAG, "clicked on: " + mAccounts.get(position).getName());
 
                 Intent intent = new Intent(AccountsActivity.this, AccountDetailActivity.class);
+                intent.setFlags(
+                        Intent.FLAG_ACTIVITY_NO_ANIMATION |
+                        Intent.FLAG_ACTIVITY_NO_HISTORY
+                );
                 intent.putExtra("accountId", mAccounts.get(position).getId());
                 startActivity(intent);
             }
@@ -83,8 +87,14 @@ public class AccountsActivity extends BaseActivity {
         });
 
         FloatingActionButton fab = findViewById(R.id.floatingActionButton);
-        fab.setOnClickListener(view -> startActivity(
-                new Intent(AccountsActivity.this, EditAccountActivity.class))
+        fab.setOnClickListener(view -> {
+            Intent intent = new Intent(AccountsActivity.this, EditAccountActivity.class);
+            intent.setFlags(
+                    Intent.FLAG_ACTIVITY_NO_ANIMATION |
+                    Intent.FLAG_ACTIVITY_NO_HISTORY
+            );
+            startActivity(intent);
+        }
         );
 
         AccountListViewModel.Factory factory = new AccountListViewModel.Factory(

@@ -100,19 +100,6 @@ public abstract class AppDatabase extends RoomDatabase {
         });
     }
 
-    public static void insertDemoData(final AppDatabase database) {
-        // Generate the data for pre-population
-        List<ClientEntity> clients = DataGenerator.generateClients();
-        List<AccountEntity> accounts =
-                DataGenerator.generateAccountsForClients(clients);
-
-        database.runInTransaction(() -> {
-            Log.i(TAG, "Insert demo data.");
-            database.clientDao().insertAll(clients);
-            database.accountDao().insertAll(accounts);
-        });
-    }
-
     public LiveData<Boolean> getDatabaseCreated() {
         return mIsDatabaseCreated;
     }
