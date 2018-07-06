@@ -25,7 +25,6 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
     public static final String PREFS_NAME = "SharedPrefs";
     public static final String PREFS_USER = "LoggedIn";
-    public static final String PREFS_LNG = "Language";
     /**
      *  Frame layout: Which is going to be used as parent layout for child activity layout.
      *  This layout is protected so that child activity can access this

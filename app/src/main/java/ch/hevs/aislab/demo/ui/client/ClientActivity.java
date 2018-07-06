@@ -1,6 +1,7 @@
 package ch.hevs.aislab.demo.ui.client;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import ch.hevs.aislab.demo.R;
 import ch.hevs.aislab.demo.database.entity.ClientEntity;
 import ch.hevs.aislab.demo.ui.BaseActivity;
+import ch.hevs.aislab.demo.ui.MainActivity;
 import ch.hevs.aislab.demo.util.OnAsyncEventListener;
 import ch.hevs.aislab.demo.viewmodel.client.ClientViewModel;
 
@@ -43,7 +45,9 @@ public class ClientActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setTitle(R.string.title_activity_client);
+        navigationView.setCheckedItem(position);
 
         getLayoutInflater().inflate(R.layout.activity_client, frameLayout);
 
@@ -209,5 +213,15 @@ public class ClientActivity extends BaseActivity {
             mEtEmail.setError(getString(R.string.error_used_email));
             mEtEmail.requestFocus();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+            return;
+        }
+        super.onBackPressed();
+        startActivity(new Intent(this, MainActivity.class));
     }
 }
