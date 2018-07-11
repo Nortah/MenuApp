@@ -11,7 +11,7 @@ import ch.hevs.aislab.demo.database.entity.ClientEntity;
 /**
  * https://developer.android.com/reference/android/arch/persistence/room/Relation
  */
-public class ClientAccounts {
+public class ClientWithAccounts {
     @Embedded
     public ClientEntity client;
 

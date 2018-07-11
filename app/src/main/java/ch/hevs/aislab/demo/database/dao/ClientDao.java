@@ -13,7 +13,7 @@ import android.database.sqlite.SQLiteConstraintException;
 import java.util.List;
 
 import ch.hevs.aislab.demo.database.entity.ClientEntity;
-import ch.hevs.aislab.demo.database.pojo.ClientAccounts;
+import ch.hevs.aislab.demo.database.pojo.ClientWithAccounts;
 
 /**
  * https://developer.android.com/topic/libraries/architecture/room.html#no-object-references
@@ -36,7 +36,7 @@ public interface ClientDao {
      */
     @Transaction
     @Query("SELECT * FROM clients WHERE email != :id")
-    LiveData<List<ClientAccounts>> getOtherClientsWithAccounts(String id);
+    LiveData<List<ClientWithAccounts>> getOtherClientsWithAccounts(String id);
 
     @Insert
     long insert(ClientEntity client) throws SQLiteConstraintException;

@@ -6,7 +6,7 @@ import java.util.List;
 
 import ch.hevs.aislab.demo.database.AppDatabase;
 import ch.hevs.aislab.demo.database.entity.ClientEntity;
-import ch.hevs.aislab.demo.database.pojo.ClientAccounts;
+import ch.hevs.aislab.demo.database.pojo.ClientWithAccounts;
 
 public class ClientRepository {
 
@@ -33,7 +33,7 @@ public class ClientRepository {
         return mDatabase.clientDao().getById(clientId);
     }
 
-    public LiveData<List<ClientAccounts>> getOtherClientsWithAccounts(final String owner) {
+    public LiveData<List<ClientWithAccounts>> getOtherClientsWithAccounts(final String owner) {
         return mDatabase.clientDao().getOtherClientsWithAccounts(owner);
     }
 
