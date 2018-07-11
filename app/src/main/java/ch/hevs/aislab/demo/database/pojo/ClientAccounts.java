@@ -9,7 +9,7 @@ import ch.hevs.aislab.demo.database.entity.AccountEntity;
 import ch.hevs.aislab.demo.database.entity.ClientEntity;
 
 /**
- * https://developer.android.com/topic/libraries/architecture/room.html#no-object-references
+ * https://developer.android.com/reference/android/arch/persistence/room/Relation
  */
 public class ClientAccounts {
     @Embedded

@@ -68,7 +68,6 @@ public class ListAdapter<T> extends ArrayAdapter<T> {
     public void updateData(List<T> data) {
         mData.clear();
         mData.addAll(data);
-        //mData = data;
         notifyDataSetChanged();
     }
 }
