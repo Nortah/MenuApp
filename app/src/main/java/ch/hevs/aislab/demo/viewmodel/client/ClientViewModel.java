@@ -7,38 +7,37 @@ import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import ch.hevs.aislab.demo.BaseApp;
-import ch.hevs.aislab.demo.database.async.client.DeleteClient;
-import ch.hevs.aislab.demo.database.async.client.UpdateClient;
 import ch.hevs.aislab.demo.database.entity.ClientEntity;
 import ch.hevs.aislab.demo.database.repository.ClientRepository;
 import ch.hevs.aislab.demo.util.OnAsyncEventListener;
 
 public class ClientViewModel extends AndroidViewModel {
 
-    private static final String TAG = "AccountViewModel";
+    private ClientRepository repository;
 
-    private ClientRepository mRepository;
+    private Application application;
 
     // MediatorLiveData can observe other LiveData objects and react on their emissions.
-    private final MediatorLiveData<ClientEntity> mObservableClient;
+    private final MediatorLiveData<ClientEntity> observableClient;
 
     public ClientViewModel(@NonNull Application application,
                             final String clientId, ClientRepository clientRepository) {
         super(application);
 
-        mRepository = clientRepository;
+        this.application = application;
 
-        mObservableClient = new MediatorLiveData<>();
+        repository = clientRepository;
+
+        observableClient = new MediatorLiveData<>();
         // set by default null, until we get data from the database.
-        mObservableClient.setValue(null);
+        observableClient.setValue(null);
 
-        LiveData<ClientEntity> client = mRepository.getClient(clientId);
+        LiveData<ClientEntity> client = repository.getClient(clientId, application);
 
         // observe the changes of the client entity from the database and forward them
-        mObservableClient.addSource(client, mObservableClient::setValue);
+        observableClient.addSource(client, observableClient::setValue);
     }
 
     /**
@@ -47,22 +46,22 @@ public class ClientViewModel extends AndroidViewModel {
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
 
         @NonNull
-        private final Application mApplication;
+        private final Application application;
 
-        private final String mClientId;
+        private final String clientId;
 
-        private final ClientRepository mRepository;
+        private final ClientRepository repository;
 
         public Factory(@NonNull Application application, String clientId) {
-            mApplication = application;
-            mClientId = clientId;
-            mRepository = ((BaseApp) application).getClientRepository();
+            this.application = application;
+            this.clientId = clientId;
+            repository = ((BaseApp) application).getClientRepository();
         }
 
         @Override
         public <T extends ViewModel> T create(Class<T> modelClass) {
             //noinspection unchecked
-            return (T) new ClientViewModel(mApplication, mClientId, mRepository);
+            return (T) new ClientViewModel(application, clientId, repository);
         }
     }
 
@@ -70,38 +69,19 @@ public class ClientViewModel extends AndroidViewModel {
      * Expose the LiveData ClientEntity query so the UI can observe it.
      */
     public LiveData<ClientEntity> getClient() {
-        return mObservableClient;
+        return observableClient;
+    }
+
+    public void createClient(ClientEntity client, OnAsyncEventListener callback) {
+        repository.insert(client, callback, application);
     }
 
     public void updateClient(ClientEntity client, OnAsyncEventListener callback) {
-        new UpdateClient(getApplication(), new OnAsyncEventListener() {
-            @Override
-            public void onSuccess() {
-                callback.onSuccess();
-                Log.d(TAG, "updateClient: success");
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                callback.onFailure(e);
-                Log.d(TAG, "updateClient: failure", e);
-            }
-        });
+        repository.update(client, callback, application);
     }
 
     public void deleteClient(ClientEntity client, OnAsyncEventListener callback) {
-        new DeleteClient(getApplication(), new OnAsyncEventListener() {
-            @Override
-            public void onSuccess() {
-                callback.onSuccess();
-                Log.d(TAG, "deleteClient: success");
-            }
+        repository.delete(client, callback, application);
 
-            @Override
-            public void onFailure(Exception e) {
-                callback.onFailure(e);
-                Log.d(TAG, "deleteClient: failure", e);
-            }
-        }).execute(client);
     }
 }

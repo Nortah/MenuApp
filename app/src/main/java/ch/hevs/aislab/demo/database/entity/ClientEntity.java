@@ -2,9 +2,8 @@ package ch.hevs.aislab.demo.database.entity;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.support.annotation.NonNull;
-
-import ch.hevs.aislab.demo.model.Client;
 
 /**
  * https://developer.android.com/reference/android/arch/persistence/room/Entity.html
@@ -15,7 +14,7 @@ import ch.hevs.aislab.demo.model.Client;
  * https://android.jlelse.eu/parcelable-vs-serializable-6a2556d51538
  */
 @Entity(tableName = "clients", primaryKeys = {"email"})
-public class ClientEntity implements Client, Comparable {
+public class ClientEntity implements Comparable {
 
     @NonNull
     private String email;
@@ -28,14 +27,8 @@ public class ClientEntity implements Client, Comparable {
 
     private String password;
 
+    @Ignore
     public ClientEntity() {
-    }
-
-    public ClientEntity(Client client) {
-        email = client.getEmail();
-        firstName = client.getFirstName();
-        lastName = client.getLastName();
-        password = client.getPassword();
     }
 
     public ClientEntity(@NonNull String email, String firstName, String lastName, String password) {
@@ -46,7 +39,6 @@ public class ClientEntity implements Client, Comparable {
     }
 
     @NonNull
-    @Override
     public String getEmail() {
         return email;
     }
@@ -55,7 +47,6 @@ public class ClientEntity implements Client, Comparable {
         this.email = email;
     }
 
-    @Override
     public String getFirstName() {
         return firstName;
     }
@@ -64,7 +55,6 @@ public class ClientEntity implements Client, Comparable {
         this.firstName = firstName;
     }
 
-    @Override
     public String getLastName() {
         return lastName;
     }
@@ -73,7 +63,6 @@ public class ClientEntity implements Client, Comparable {
         this.lastName = lastName;
     }
 
-    @Override
     public String getPassword() {
         return password;
     }

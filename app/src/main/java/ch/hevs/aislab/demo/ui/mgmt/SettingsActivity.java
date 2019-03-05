@@ -38,8 +38,6 @@ import ch.hevs.aislab.demo.ui.BaseActivity;
  */
 public class SettingsActivity extends PreferenceActivity {
 
-    private final String TAG = "SettingsActivity";
-
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.

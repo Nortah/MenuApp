@@ -10,36 +10,34 @@ import ch.hevs.aislab.demo.util.OnAsyncEventListener;
 
 public class Transaction extends AsyncTask<Pair<AccountEntity, AccountEntity>, Void, Void> {
 
-    private static final String TAG = "Transaction";
-
-    private Application mApplication;
-    private OnAsyncEventListener mCallBack;
-    private Exception mException;
+    private Application application;
+    private OnAsyncEventListener callback;
+    private Exception exception;
 
     public Transaction(Application application, OnAsyncEventListener callback) {
-        mApplication = application;
-        mCallBack = callback;
+        this.application = application;
+        this.callback = callback;
     }
 
     @Override
     protected Void doInBackground(Pair<AccountEntity, AccountEntity>... params) {
         try {
             for (Pair<AccountEntity, AccountEntity> accountPair : params)
-                ((BaseApp) mApplication).getAccountRepository()
+                ((BaseApp) application).getDatabase().accountDao()
                         .transaction(accountPair.first, accountPair.second);
         } catch (Exception e) {
-            mException = e;
+            exception = e;
         }
         return null;
     }
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        if (mCallBack != null) {
-            if (mException == null) {
-                mCallBack.onSuccess();
+        if (callback != null) {
+            if (exception == null) {
+                callback.onSuccess();
             } else {
-                mCallBack.onFailure(mException);
+                callback.onFailure(exception);
             }
         }
     }

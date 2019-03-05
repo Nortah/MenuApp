@@ -9,36 +9,34 @@ import ch.hevs.aislab.demo.util.OnAsyncEventListener;
 
 public class DeleteClient extends AsyncTask<ClientEntity, Void, Void> {
 
-    private static final String TAG = "DeleteClient";
-
-    private Application mApplication;
-    private OnAsyncEventListener mCallBack;
-    private Exception mException;
+    private Application application;
+    private OnAsyncEventListener callback;
+    private Exception exception;
 
     public DeleteClient(Application application, OnAsyncEventListener callback) {
-        mApplication = application;
-        mCallBack = callback;
+        this.application = application;
+        this.callback = callback;
     }
 
     @Override
     protected Void doInBackground(ClientEntity... params) {
         try {
             for (ClientEntity client : params)
-                ((BaseApp) mApplication).getClientRepository()
+                ((BaseApp) application).getDatabase().clientDao()
                         .delete(client);
         } catch (Exception e) {
-            mException = e;
+            exception = e;
         }
         return null;
     }
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        if (mCallBack != null) {
-            if (mException == null) {
-                mCallBack.onSuccess();
+        if (callback != null) {
+            if (exception == null) {
+                callback.onSuccess();
             } else {
-                mCallBack.onFailure(mException);
+                callback.onFailure(exception);
             }
         }
     }

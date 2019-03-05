@@ -5,8 +5,6 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
-import ch.hevs.aislab.demo.model.Account;
-
 /**
  * https://developer.android.com/reference/android/arch/persistence/room/Entity.html
  *
@@ -32,7 +30,7 @@ import ch.hevs.aislab.demo.model.Account;
                 value = {"owner"}
         )}
 )
-public class AccountEntity implements Account {
+public class AccountEntity {
     @PrimaryKey(autoGenerate = true)
     private Long id;
     private String name;
@@ -42,14 +40,12 @@ public class AccountEntity implements Account {
     public AccountEntity() {
     }
 
-    public AccountEntity(Account account) {
-        id = account.getId();
-        name = account.getName();
-        balance = account.getBalance();
-        owner = account.getOwner();
+    public AccountEntity(String name, Double balance, String owner) {
+        this.name = name;
+        this.balance = balance;
+        this.owner = owner;
     }
 
-    @Override
     public Long getId() {
         return id;
     }
@@ -58,7 +54,6 @@ public class AccountEntity implements Account {
         this.id = id;
     }
 
-    @Override
     public String getName() {
         return name;
     }
@@ -67,7 +62,6 @@ public class AccountEntity implements Account {
         this.name = name;
     }
 
-    @Override
     public Double getBalance() {
         return balance;
     }
@@ -76,7 +70,6 @@ public class AccountEntity implements Account {
         this.balance = balance;
     }
 
-    @Override
     public String getOwner() {
         return owner;
     }

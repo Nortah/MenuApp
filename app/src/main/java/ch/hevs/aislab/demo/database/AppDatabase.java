@@ -10,7 +10,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import java.util.List;
 import java.util.concurrent.Executors;
 
 import ch.hevs.aislab.demo.database.dao.AccountDao;
@@ -23,7 +22,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static final String TAG = "AppDatabase";
 
-    private static AppDatabase sInstance;
+    private static AppDatabase instance;
 
     private static final String DATABASE_NAME = "bank-database";
 
@@ -34,15 +33,15 @@ public abstract class AppDatabase extends RoomDatabase {
     private final MutableLiveData<Boolean> mIsDatabaseCreated = new MutableLiveData<>();
 
     public static AppDatabase getInstance(final Context context) {
-        if (sInstance == null) {
+        if (instance == null) {
             synchronized (AppDatabase.class) {
-                if (sInstance == null) {
-                    sInstance = buildDatabase(context.getApplicationContext());
-                    sInstance.updateDatabaseCreated(context.getApplicationContext());
+                if (instance == null) {
+                    instance = buildDatabase(context.getApplicationContext());
+                    instance.updateDatabaseCreated(context.getApplicationContext());
                 }
             }
         }
-        return sInstance;
+        return instance;
     }
 
     /**
@@ -67,6 +66,18 @@ public abstract class AppDatabase extends RoomDatabase {
                 }).build();
     }
 
+    public static void initializeDemoData(final AppDatabase database) {
+        Executors.newSingleThreadExecutor().execute(() -> {
+            database.runInTransaction(() -> {
+                Log.i(TAG, "Wipe database.");
+                database.clientDao().deleteAll();
+                database.accountDao().deleteAll();
+
+                DatabaseInitializer.populateDatabase(database);
+            });
+        });
+    }
+
     /**
      * Check whether the database already exists and expose it via {@link #getDatabaseCreated()}
      */
@@ -79,25 +90,6 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private void setDatabaseCreated(){
         mIsDatabaseCreated.postValue(true);
-    }
-
-    public static void initializeDemoData(final AppDatabase database) {
-        Executors.newSingleThreadExecutor().execute(() -> {
-            database.runInTransaction(() -> {
-                Log.i(TAG, "Wipe database.");
-                database.clientDao().deleteAll();
-                database.accountDao().deleteAll();
-
-                // Generate the data for pre-population
-                List<ClientEntity> clients = DataGenerator.generateClients();
-                List<AccountEntity> accounts =
-                        DataGenerator.generateAccountsForClients(clients);
-
-                Log.i(TAG, "Insert demo data.");
-                database.clientDao().insertAll(clients);
-                database.accountDao().insertAll(accounts);
-            });
-        });
     }
 
     public LiveData<Boolean> getDatabaseCreated() {

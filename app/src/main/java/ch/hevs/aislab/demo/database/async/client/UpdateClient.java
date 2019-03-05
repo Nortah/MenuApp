@@ -9,36 +9,34 @@ import ch.hevs.aislab.demo.util.OnAsyncEventListener;
 
 public class UpdateClient extends AsyncTask<ClientEntity, Void, Void> {
 
-    private static final String TAG = "UpdateClient";
-
-    private Application mApplication;
-    private OnAsyncEventListener mCallBack;
-    private Exception mException;
+    private Application application;
+    private OnAsyncEventListener calback;
+    private Exception exception;
 
     public UpdateClient(Application application, OnAsyncEventListener callback) {
-        mApplication = application;
-        mCallBack = callback;
+        this.application = application;
+        calback = callback;
     }
 
     @Override
     protected Void doInBackground(ClientEntity... params) {
         try {
             for (ClientEntity client : params)
-                ((BaseApp) mApplication).getClientRepository()
+                ((BaseApp) application).getDatabase().clientDao()
                         .update(client);
         } catch (Exception e) {
-            mException = e;
+            exception = e;
         }
         return null;
     }
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        if (mCallBack != null) {
-            if (mException == null) {
-                mCallBack.onSuccess();
+        if (calback != null) {
+            if (exception == null) {
+                calback.onSuccess();
             } else {
-                mCallBack.onFailure(mException);
+                calback.onFailure(exception);
             }
         }
     }

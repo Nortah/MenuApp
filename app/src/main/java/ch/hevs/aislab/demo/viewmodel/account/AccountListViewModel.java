@@ -7,14 +7,10 @@ import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
-import android.util.Log;
-import android.util.Pair;
 
 import java.util.List;
 
 import ch.hevs.aislab.demo.BaseApp;
-import ch.hevs.aislab.demo.database.async.account.DeleteAccount;
-import ch.hevs.aislab.demo.database.async.account.Transaction;
 import ch.hevs.aislab.demo.database.entity.AccountEntity;
 import ch.hevs.aislab.demo.database.pojo.ClientWithAccounts;
 import ch.hevs.aislab.demo.database.repository.AccountRepository;
@@ -23,32 +19,37 @@ import ch.hevs.aislab.demo.util.OnAsyncEventListener;
 
 public class AccountListViewModel extends AndroidViewModel {
 
-    private static final String TAG = "AccountListViewModel";
+    private Application application;
 
-    private AccountRepository mRepository;
+    private AccountRepository repository;
 
     // MediatorLiveData can observe other LiveData objects and react on their emissions.
-    private final MediatorLiveData<List<ClientWithAccounts>> mObservableClientAccounts;
-    private final MediatorLiveData<List<AccountEntity>> mObservableOwnAccounts;
+    private final MediatorLiveData<List<ClientWithAccounts>> observableClientAccounts;
+    private final MediatorLiveData<List<AccountEntity>> observableOwnAccounts;
 
     public AccountListViewModel(@NonNull Application application,
-                                final String ownerId, ClientRepository clientRepository, AccountRepository accountRepository) {
+                                final String ownerId,
+                                ClientRepository clientRepository,
+                                AccountRepository accountRepository) {
         super(application);
 
-        mRepository = accountRepository;
+        this.application = application;
 
-        mObservableClientAccounts = new MediatorLiveData<>();
-        mObservableOwnAccounts = new MediatorLiveData<>();
+        repository = accountRepository;
+
+        observableClientAccounts = new MediatorLiveData<>();
+        observableOwnAccounts = new MediatorLiveData<>();
         // set by default null, until we get data from the database.
-        mObservableClientAccounts.setValue(null);
-        mObservableOwnAccounts.setValue(null);
+        observableClientAccounts.setValue(null);
+        observableOwnAccounts.setValue(null);
 
-        LiveData<List<ClientWithAccounts>> clientAccounts = clientRepository.getOtherClientsWithAccounts(ownerId);
-        LiveData<List<AccountEntity>> ownAccounts = mRepository.getByOwner(ownerId);
+        LiveData<List<ClientWithAccounts>> clientAccounts =
+                clientRepository.getOtherClientsWithAccounts(ownerId, application);
+        LiveData<List<AccountEntity>> ownAccounts = repository.getByOwner(ownerId, application);
 
         // observe the changes of the entities from the database and forward them
-        mObservableClientAccounts.addSource(clientAccounts, mObservableClientAccounts::setValue);
-        mObservableOwnAccounts.addSource(ownAccounts, mObservableOwnAccounts::setValue);
+        observableClientAccounts.addSource(clientAccounts, observableClientAccounts::setValue);
+        observableOwnAccounts.addSource(ownAccounts, observableOwnAccounts::setValue);
     }
 
     /**
@@ -57,25 +58,25 @@ public class AccountListViewModel extends AndroidViewModel {
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
 
         @NonNull
-        private final Application mApplication;
+        private final Application application;
 
-        private final String mOwnerId;
+        private final String ownerId;
 
-        private final ClientRepository mClientRepository;
+        private final ClientRepository clientRepository;
 
-        private final AccountRepository mAccountRepository;
+        private final AccountRepository accountRepository;
 
         public Factory(@NonNull Application application, String ownerId) {
-            mApplication = application;
-            mOwnerId = ownerId;
-            mClientRepository = ((BaseApp) application).getClientRepository();
-            mAccountRepository = ((BaseApp) application).getAccountRepository();
+            this.application = application;
+            this.ownerId = ownerId;
+            clientRepository = ((BaseApp) application).getClientRepository();
+            accountRepository = ((BaseApp) application).getAccountRepository();
         }
 
         @Override
         public <T extends ViewModel> T create(Class<T> modelClass) {
             //noinspection unchecked
-            return (T) new AccountListViewModel(mApplication, mOwnerId, mClientRepository, mAccountRepository);
+            return (T) new AccountListViewModel(application, ownerId, clientRepository, accountRepository);
         }
     }
 
@@ -83,42 +84,22 @@ public class AccountListViewModel extends AndroidViewModel {
      * Expose the LiveData ClientAccounts query so the UI can observe it.
      */
     public LiveData<List<ClientWithAccounts>> getClientAccounts() {
-        return mObservableClientAccounts;
+        return observableClientAccounts;
     }
 
     /**
      * Expose the LiveData AccountEntities query so the UI can observe it.
      */
     public LiveData<List<AccountEntity>> getOwnAccounts() {
-        return mObservableOwnAccounts;
+        return observableOwnAccounts;
     }
 
-    public void deleteAccount(AccountEntity account) {
-        new DeleteAccount(getApplication(), new OnAsyncEventListener() {
-            @Override
-            public void onSuccess() {
-                Log.d(TAG, "deleteAccount: success");
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                Log.d(TAG, "deleteAccount: failure", e);
-            }
-        }).execute(account);
+    public void deleteAccount(AccountEntity account, OnAsyncEventListener callback) {
+        repository.delete(account, callback, application);
     }
 
-    public void executeTransaction(final AccountEntity sender, final AccountEntity recipient) {
-        //noinspection unchecked
-        new Transaction(getApplication(), new OnAsyncEventListener() {
-            @Override
-            public void onSuccess() {
-                Log.d(TAG, "transaction: success");
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                Log.d(TAG, "transaction: failure", e);
-            }
-        }).execute(Pair.create(sender, recipient));
+    public void executeTransaction(final AccountEntity sender, final AccountEntity recipient,
+                                   OnAsyncEventListener callback) {
+        repository.transaction(sender, recipient, callback, application);
     }
 }

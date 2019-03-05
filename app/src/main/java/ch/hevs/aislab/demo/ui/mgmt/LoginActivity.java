@@ -28,13 +28,11 @@ import static ch.hevs.aislab.demo.database.AppDatabase.initializeDemoData;
  */
 public class LoginActivity extends AppCompatActivity {
 
-    private static final String TAG = "LoginActivity";
+    private AutoCompleteTextView emailView;
+    private EditText passwordView;
+    private ProgressBar progressBar;
 
-    private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
-    private ProgressBar mProgressBar;
-
-    private ClientRepository mRepository;
+    private ClientRepository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,19 +41,21 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
 
-        mRepository = ((BaseApp) getApplication()).getClientRepository();
-        mProgressBar = findViewById(R.id.progress);
+        repository = ((BaseApp) getApplication()).getClientRepository();
+        progressBar = findViewById(R.id.progress);
 
         // Set up the login form.
-        mEmailView = findViewById(R.id.email);
+        emailView = findViewById(R.id.email);
 
-        mPasswordView = findViewById(R.id.password);
+        passwordView = findViewById(R.id.password);
 
         Button emailSignInButton = findViewById(R.id.email_sign_in_button);
         emailSignInButton.setOnClickListener(view -> attemptLogin());
 
         Button registerButton = findViewById(R.id.register_button);
-        registerButton.setOnClickListener(view -> startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
+        registerButton.setOnClickListener(view -> startActivity(
+                new Intent(LoginActivity.this, RegisterActivity.class))
+        );
 
         Button demoDataButton = findViewById(R.id.demo_data_button);
         demoDataButton.setOnClickListener(view -> reinitializeDatabase());
@@ -79,32 +79,32 @@ public class LoginActivity extends AppCompatActivity {
     private void attemptLogin() {
 
         // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
+        emailView.setError(null);
+        passwordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        String email = emailView.getText().toString();
+        String password = passwordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            mPasswordView.setText("");
-            focusView = mPasswordView;
+            passwordView.setError(getString(R.string.error_invalid_password));
+            passwordView.setText("");
+            focusView = passwordView;
             cancel = true;
         }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
+            emailView.setError(getString(R.string.error_field_required));
+            focusView = emailView;
             cancel = true;
         } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
+            emailView.setError(getString(R.string.error_invalid_email));
+            focusView = emailView;
             cancel = true;
         }
 
@@ -113,8 +113,8 @@ public class LoginActivity extends AppCompatActivity {
             // form field with an error.
             focusView.requestFocus();
         } else {
-            mProgressBar.setVisibility(View.VISIBLE);
-            mRepository.getClient(email).observe(LoginActivity.this, clientEntity -> {
+            progressBar.setVisibility(View.VISIBLE);
+            repository.getClient(email, getApplication()).observe(LoginActivity.this, clientEntity -> {
                 if (clientEntity != null) {
                     if (clientEntity.getPassword().equals(password)) {
                         // We need an Editor object to make preference changes.
@@ -125,19 +125,19 @@ public class LoginActivity extends AppCompatActivity {
 
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
-                        mEmailView.setText("");
-                        mPasswordView.setText("");
+                        emailView.setText("");
+                        passwordView.setText("");
                     } else {
-                        mPasswordView.setError(getString(R.string.error_incorrect_password));
-                        mPasswordView.requestFocus();
-                        mPasswordView.setText("");
+                        passwordView.setError(getString(R.string.error_incorrect_password));
+                        passwordView.requestFocus();
+                        passwordView.setText("");
                     }
-                    mProgressBar.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
                 } else {
-                    mEmailView.setError(getString(R.string.error_invalid_email));
-                    mEmailView.requestFocus();
-                    mPasswordView.setText("");
-                    mProgressBar.setVisibility(View.GONE);
+                    emailView.setError(getString(R.string.error_invalid_email));
+                    emailView.requestFocus();
+                    passwordView.setText("");
+                    progressBar.setVisibility(View.GONE);
                 }
             });
         }
