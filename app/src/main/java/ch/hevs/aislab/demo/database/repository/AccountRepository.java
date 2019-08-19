@@ -1,7 +1,7 @@
 package ch.hevs.aislab.demo.database.repository;
 
 import android.app.Application;
-import android.arch.lifecycle.LiveData;
+import androidx.lifecycle.LiveData;
 import android.util.Pair;
 
 import java.util.List;

@@ -5,7 +5,6 @@ import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,16 +13,14 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
-import android.support.v4.app.NavUtils;
-import android.util.Log;
+import androidx.annotation.Nullable;
+import androidx.core.app.NavUtils;
+
 import android.view.MenuItem;
-import android.view.View;
 
 import java.util.List;
 
 import ch.hevs.aislab.demo.R;
-import ch.hevs.aislab.demo.ui.BaseActivity;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On

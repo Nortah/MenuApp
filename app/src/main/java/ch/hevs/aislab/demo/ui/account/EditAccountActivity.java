@@ -1,6 +1,6 @@
 package ch.hevs.aislab.demo.ui.account;
 
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
